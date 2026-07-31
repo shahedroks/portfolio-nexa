@@ -1,0 +1,455 @@
+{
+  "hero": {
+    "badge": "Open for new projects",
+    "badgeSecondary": "Remote · Global clients",
+    "headlineBefore": "Product-ready ",
+    "headlineAccent": "Flutter apps",
+    "headlineAfter": ", admin systems & web platforms",
+    "subcopy": "NexaSoft helps startups and growing teams ship cross-platform mobile apps, secure dashboards, and conversion-focused websites — with clean architecture, clear timelines, and code you fully own.",
+    "chips": ["Flutter · iOS & Android", "Admin panels & APIs", "App Store & Play Store"],
+    "primaryCta": { "label": "Book a Call", "href": "#book" },
+    "secondaryCta": { "label": "View selected work", "href": "#projects" },
+    "connectLabel": "Connect",
+    "trustedStrip": {
+      "eyebrow": "Proven delivery",
+      "copy": "Results clients care about — shipped apps, clear communication, and on-time launches.",
+      "platforms": ["Flutter", "iOS", "Android", "Admin Panels", "Web Apps"],
+      "proofs": [
+        { "value": "50+", "label": "Projects shipped", "iconKey": "FolderCheck" },
+        { "value": "30+", "label": "Happy clients", "iconKey": "Users" },
+        { "value": "5+", "label": "Years experience", "iconKey": "Clock3" },
+        { "value": "4.9★", "label": "Average rating", "iconKey": "Star" }
+      ]
+    },
+    "mockups": {
+      "screens": [
+        { "src": "", "alt": "Admin analytics dashboard", "kind": "laptop" },
+        { "src": "", "alt": "Wallet mobile app", "kind": "phone" },
+        { "src": "", "alt": "Fitness mobile app", "kind": "phone" }
+      ],
+      "proofs": [
+        {
+          "label": "4.9★ Rating",
+          "detail": "30+ apps delivered",
+          "iconKey": "Star",
+          "tone": "text-amber-300 bg-amber-400/15",
+          "position": "left-0 top-[9%] sm:-left-2"
+        },
+        {
+          "label": "Apple Store",
+          "detail": "iOS App Store live",
+          "iconKey": "Apple",
+          "tone": "text-white bg-white/10",
+          "position": "bottom-[14%] left-[34%] sm:bottom-[16%] sm:left-[38%]"
+        },
+        {
+          "label": "Play Store Live",
+          "detail": "Android apps live",
+          "iconKey": "Smartphone",
+          "tone": "text-emerald-300 bg-emerald-400/15",
+          "position": "-bottom-1 -right-1 sm:bottom-0 sm:-right-3"
+        },
+        {
+          "label": "Secure Admin",
+          "detail": "Role-based panels",
+          "iconKey": "ShieldCheck",
+          "tone": "text-sky-300 bg-sky-400/15",
+          "position": "left-0 top-[52%] sm:-left-2 sm:top-[54%]"
+        },
+        {
+          "label": "Fast Delivery",
+          "detail": "4–8 week MVPs",
+          "iconKey": "Zap",
+          "tone": "text-cyan-300 bg-cyan-400/15",
+          "position": "top-[38%] right-0 sm:top-[36%] sm:-right-2"
+        },
+        {
+          "label": "Clean Handoff",
+          "detail": "You own the code",
+          "iconKey": "Code2",
+          "tone": "text-orange-300 bg-orange-400/15",
+          "position": "top-[22%] left-[28%] sm:left-[32%]"
+        }
+      ]
+    }
+  },
+  "about": {
+    "eyebrow": "About Me",
+    "title": "A developer who ships products, not just code",
+    "bio": "I'm a full-stack developer with 5+ years building cross-platform mobile apps, admin panels, and websites for startups and agencies across the US, UK, and Australia. I work end-to-end — from Flutter interfaces and Node.js APIs to app store launches and post-release support. My focus is simple: clear communication, predictable timelines, and software that measurably moves your business metrics. Every project ships with clean, documented code you fully own.",
+    "portraitUrl": "",
+    "portraitAlt": "NexaSoft founder portrait",
+    "availableBadge": "Available for hire",
+    "stats": [
+      { "value": "50+", "label": "Projects Completed" },
+      { "value": "30+", "label": "Happy Clients" },
+      { "value": "5+", "label": "Years Experience" },
+      { "value": "100%", "label": "On-Time Delivery" }
+    ]
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Everything you need to launch and scale",
+    "subtitle": "One partner for design, mobile, web, and backend — so nothing gets lost between handoffs.",
+    "items": [
+      {
+        "iconKey": "Smartphone",
+        "title": "Mobile App Development",
+        "description": "Production-ready Flutter apps for iOS and Android from a single codebase — offline support, push notifications, payments, and store submission handled end to end.",
+        "points": ["Flutter & Dart", "iOS + Android", "App Store & Play launch"]
+      },
+      {
+        "iconKey": "LayoutDashboard",
+        "title": "Admin Panel / Dashboard",
+        "description": "Role-based back offices that make your operations team faster: real-time analytics, CRUD workflows, exports, and secure authentication on a clean Node.js API.",
+        "points": ["Role-based access", "Live analytics", "REST APIs"]
+      },
+      {
+        "iconKey": "Globe",
+        "title": "Website Development",
+        "description": "Marketing sites and web apps engineered for speed and SEO, with responsive layouts, CMS-ready content, and 90+ Lighthouse scores as a baseline, not a bonus.",
+        "points": ["Responsive builds", "SEO ready", "Performance tuned"]
+      },
+      {
+        "iconKey": "PenTool",
+        "title": "UI/UX Design",
+        "description": "User flows, wireframes, and high-fidelity prototypes in Figma — plus a reusable design system so your product stays consistent as it grows.",
+        "points": ["Figma prototypes", "Design systems", "Usability testing"]
+      }
+    ]
+  },
+  "portfolio": {
+    "eyebrow": "Portfolio",
+    "title": "Selected work from recent client projects",
+    "subtitle": "Apps, dashboards, and websites shipped for founders and agencies — with clear outcomes, not just screenshots.",
+    "filters": ["All", "Mobile Apps", "Admin Panels", "Websites", "UI/UX"]
+  },
+  "process": {
+    "eyebrow": "End-to-End Process",
+    "title": "From first message to App Store & Play Store",
+    "subtitle": "A clear step-by-step workflow — requirement to design, development, integration, and store launch.",
+    "steps": [
+      {
+        "title": "Requirement Understanding",
+        "description": "We start with a call or message to clearly understand your idea, users, features, timeline, and budget — so nothing important is missed.",
+        "iconKey": "MessageSquareText",
+        "highlights": ["Call or WhatsApp / email", "Feature & goal mapping", "Scope + estimate"]
+      },
+      {
+        "title": "UI/UX Design",
+        "description": "I design clean, modern screens and user flows in Figma — so you can review the look, feel, and journey before development begins.",
+        "iconKey": "Palette",
+        "highlights": ["Wireframes & high-fidelity UI", "Clickable prototype", "Design system ready"]
+      },
+      {
+        "title": "App Development",
+        "description": "Your mobile app is built with Flutter for iOS and Android from one codebase — smooth performance, clean architecture, and weekly progress demos.",
+        "iconKey": "Smartphone",
+        "highlights": ["Flutter (iOS + Android)", "Core features & APIs", "Weekly build updates"]
+      },
+      {
+        "title": "Admin Panel, Website & Backend",
+        "description": "If you need an admin panel or website, I design and build the backend too — then connect everything with secure API integration.",
+        "iconKey": "ServerCog",
+        "optional": true,
+        "highlights": ["Admin dashboard", "Website (if needed)", "Backend + API integration"]
+      },
+      {
+        "title": "Testing & Store Launch",
+        "description": "After full testing, I prepare and publish your app to the Apple App Store and Google Play Store — then support you through go-live.",
+        "iconKey": "Store",
+        "highlights": ["QA on real devices", "App Store submission", "Google Play release"]
+      }
+    ]
+  },
+  "tech_stack": {
+    "eyebrow": "Tech Stack",
+    "title": "Tools I use to build reliable software",
+    "subtitle": "A pragmatic stack chosen for speed of delivery, long-term maintainability, and easy handover to your in-house team.",
+    "items": [
+      { "name": "Flutter", "iconKey": "Smartphone" },
+      { "name": "Dart", "iconKey": "Code2" },
+      { "name": "Firebase", "iconKey": "Flame" },
+      { "name": "REST API", "iconKey": "Server" },
+      { "name": "Node.js", "iconKey": "Server" },
+      { "name": "Express.js", "iconKey": "Network" },
+      { "name": "MySQL", "iconKey": "Database" },
+      { "name": "PostgreSQL", "iconKey": "Cylinder" },
+      { "name": "MongoDB", "iconKey": "Leaf" },
+      { "name": "Figma", "iconKey": "Figma" },
+      { "name": "Git & GitHub", "iconKey": "GitBranch" },
+      { "name": "Provider / Bloc", "iconKey": "Layers" },
+      { "name": "Payment Gateways", "iconKey": "CreditCard" },
+      { "name": "React", "iconKey": "Atom" }
+    ]
+  },
+  "why_me": {
+    "eyebrow": "Why Work With Me",
+    "title": "Built for clients who value reliability",
+    "subtitle": "Great code matters. So does knowing your project is in dependable hands from kickoff to launch.",
+    "values": [
+      {
+        "iconKey": "MessageSquare",
+        "title": "Clear & Fast Communication",
+        "description": "Daily updates on Slack or email, and replies within a few hours — never days."
+      },
+      {
+        "iconKey": "Clock",
+        "title": "US Time-Zone Friendly",
+        "description": "Overlapping hours for EST and PST calls, so feedback loops stay same-day."
+      },
+      {
+        "iconKey": "DollarSign",
+        "title": "Transparent Pricing",
+        "description": "Fixed-scope quotes or clear hourly rates. No hidden fees, no scope-creep invoices."
+      },
+      {
+        "iconKey": "CalendarCheck",
+        "title": "On-Time Delivery",
+        "description": "Milestone-based schedules with a 100% on-time record across 50+ projects."
+      },
+      {
+        "iconKey": "LifeBuoy",
+        "title": "Post-Launch Support",
+        "description": "30 days of free bug fixes, plus optional monthly maintenance retainers."
+      },
+      {
+        "iconKey": "ShieldCheck",
+        "title": "NDA & Code Ownership",
+        "description": "Happy to sign your NDA. You own 100% of the source code and all repositories."
+      }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Clear starting points for every stage",
+    "subtitle": "Transparent ranges so you can plan with confidence — final quotes always match your scope.",
+    "footerNote": "All prices are in USD. Deposits are charged securely via Stripe. Final quotes depend on scope, platforms, integrations, and timeline — share a brief and we'll send a fixed quote before remaining work starts.",
+    "plans": [
+      {
+        "id": "starter",
+        "name": "Starter",
+        "price": "$2,500+",
+        "depositLabel": "Deposit $500",
+        "depositNote": "Pay a $500 deposit to reserve a kickoff — balance invoiced after scope.",
+        "description": "Focused builds for MVPs, landing sites, and tightly scoped features.",
+        "featured": false,
+        "checkout": true,
+        "bullets": [
+          "Single platform or marketing site",
+          "Core screens / key flows",
+          "Basic API or CMS integration",
+          "2 weeks of post-launch support"
+        ]
+      },
+      {
+        "id": "growth",
+        "name": "Growth",
+        "price": "$7,500+",
+        "depositLabel": "Deposit $1,500",
+        "depositNote": "Pay a $1,500 deposit to reserve a kickoff — balance invoiced after scope.",
+        "description": "Production apps and dashboards ready for real users and ops teams.",
+        "featured": true,
+        "checkout": true,
+        "bullets": [
+          "iOS + Android or full admin panel",
+          "Auth, roles, and core workflows",
+          "Payments or third-party APIs",
+          "Store / production deploy help",
+          "1 month of post-launch support"
+        ]
+      },
+      {
+        "id": "custom",
+        "name": "Custom / Enterprise",
+        "price": "Custom quote",
+        "depositLabel": "Get a Quote",
+        "depositNote": "Share your scope and we'll send a fixed quote before any work starts.",
+        "description": "Multi-product systems, complex integrations, and ongoing partnership.",
+        "featured": false,
+        "checkout": false,
+        "bullets": [
+          "Multi-app or multi-tenant systems",
+          "Custom architecture & SLAs",
+          "Dedicated roadmap & iterations",
+          "Priority support & handoff docs"
+        ]
+      }
+    ]
+  },
+  "hire": {
+    "eyebrow": "Hire with confidence",
+    "title": "Prefer a Trusted Platform?",
+    "subtitle": "You can also hire and pay securely through these platforms — with their built-in buyer protection.",
+    "platforms": [
+      {
+        "name": "Fiverr",
+        "title": "Hire me on Fiverr",
+        "blurb": "Fixed-price gigs with money-back guarantee",
+        "cta": "View Fiverr Profile",
+        "hrefKey": "fiverrUrl",
+        "accent": "#1DBF73",
+        "features": ["Fixed-price gigs", "Money-back guarantee"],
+        "featured": true
+      },
+      {
+        "name": "Upwork",
+        "title": "Hire me on Upwork",
+        "blurb": "Secure milestone payments & buyer protection",
+        "cta": "View Upwork Profile",
+        "hrefKey": "upworkUrl",
+        "accent": "#14A800",
+        "features": ["Milestone escrow", "Buyer protection"],
+        "featured": false
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Testimonials",
+    "title": "What clients say after launch",
+    "subtitle": "Long-term relationships built on delivery — 8 out of 10 clients come back for a second project.",
+    "platformRatings": [
+      { "label": "5.0 on Upwork", "mark": "Up" },
+      { "label": "4.9 on Fiverr", "mark": "Fi" },
+      { "label": "5.0 on Clutch", "mark": "Cl" }
+    ],
+    "items": [
+      {
+        "quote": "NexaSoft rebuilt our field-service app in Flutter and shipped both stores in nine weeks. Crash rate dropped to near zero and our technicians finally stopped complaining about the tool.",
+        "name": "Michael Turner",
+        "title": "COO",
+        "company": "Northline Services"
+      },
+      {
+        "quote": "The admin dashboard the team delivered replaced three spreadsheets and a manual billing process. Our ops team saves roughly 15 hours a week, every week.",
+        "name": "Priya Raman",
+        "title": "Founder",
+        "company": "CareBridge Health"
+      },
+      {
+        "quote": "Communication was the standout. Weekly demos, honest timelines, and they flagged risks before they became problems. Rare for a freelance engagement.",
+        "name": "Sarah Whitfield",
+        "title": "Product Lead",
+        "company": "Halo Digital Agency"
+      },
+      {
+        "quote": "Our new site loads in under a second and conversions are up 34% since launch. They handled design, build, and Stripe integration without hand-holding.",
+        "name": "Daniel Okafor",
+        "title": "CEO",
+        "company": "ShopEase Retail"
+      },
+      {
+        "quote": "We needed a wallet app with KYC and push notifications. NexaSoft owned the Flutter client, Node API, and Play Store release. Users still rate us 4.8.",
+        "name": "Elena Vasquez",
+        "title": "CTO",
+        "company": "PayNest Fintech"
+      },
+      {
+        "quote": "They took our Figma and turned it into a production fitness app with workouts, subscriptions, and analytics. Onboarding completion jumped 40%.",
+        "name": "James Cole",
+        "title": "Founder",
+        "company": "PulseFit"
+      },
+      {
+        "quote": "Role-based admin, inventory sync, and a customer portal — all in one engagement. Support tickets related to ops tooling fell by half.",
+        "name": "Amina Hassan",
+        "title": "Operations Director",
+        "company": "MarketLane"
+      },
+      {
+        "quote": "Clear estimates, clean code handoff, and App Store approval on the first try. We hired the team again for the vendor portal three months later.",
+        "name": "Ryan Brooks",
+        "title": "VP Engineering",
+        "company": "Freightly"
+      },
+      {
+        "quote": "Our booking app was late with another vendor. NexaSoft stabilized the backlog, shipped iOS + Android, and documented everything for our in-house team.",
+        "name": "Chloe Nguyen",
+        "title": "Head of Product",
+        "company": "Bookora"
+      },
+      {
+        "quote": "They built the marketing site and CMS so our content team can publish without developers. SEO traffic is up and the brand finally looks premium.",
+        "name": "Omar Farouk",
+        "title": "Marketing Lead",
+        "company": "Lumen Studio"
+      },
+      {
+        "quote": "Realtime chat, maps, and offline mode for our delivery drivers. Flutter performance on older Android devices was better than we expected.",
+        "name": "Laura Bennett",
+        "title": "COO",
+        "company": "SwiftDrop Logistics"
+      },
+      {
+        "quote": "From discovery call to production admin panel in six weeks. Charts, exports, and audit logs — exactly what our compliance team asked for.",
+        "name": "Kenji Sato",
+        "title": "Founder",
+        "company": "AuditFlow"
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Frequently asked questions",
+    "subtitle": "Straight answers on timeline, ownership, payments, and how we work with US clients.",
+    "faqs": [
+      {
+        "q": "What's your typical project timeline?",
+        "a": "Most MVPs and focused mobile apps ship in 4–8 weeks. Full app + admin panel + backend engagements usually run 8–14 weeks depending on scope, integrations, and review cycles. You'll get a dated milestone plan before kickoff."
+      },
+      {
+        "q": "How do you handle time zone differences with US clients?",
+        "a": "I work US-friendly hours for standups and reviews (overlap with EST/PST as needed). Async updates happen daily via email or Slack, so progress never depends on sitting in the same time zone all day."
+      },
+      {
+        "q": "Who owns the code and IP after the project is delivered?",
+        "a": "You do. On final payment, source code, designs delivered for the project, and related IP transfer to you. I don't reuse your proprietary business logic or brand assets on other client work."
+      },
+      {
+        "q": "Do you sign NDAs?",
+        "a": "Yes. I'm happy to sign a mutual NDA before discovery or kickoff so product ideas, data, and credentials stay protected."
+      },
+      {
+        "q": "What's your payment structure (upfront/milestones)?",
+        "a": "Typical structure is 30–40% to start, then milestone-based payments tied to demos (UI complete, API integrated, store-ready). Exact splits are written into the statement of work so both sides stay clear."
+      },
+      {
+        "q": "Do you offer post-launch support and maintenance?",
+        "a": "Yes. Starter projects include a short support window; Growth and Custom engagements can include 1+ months of bug fixes, store updates, and minor improvements. Ongoing retainers are available if you want continuous iteration."
+      },
+      {
+        "q": "What if I need revisions after delivery?",
+        "a": "Each milestone includes a defined revision round. Feedback inside the agreed scope is included. Larger changes after sign-off are estimated as a change request so timelines and budget stay honest."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's Build Something Great Together",
+    "subtitle": "Book a discovery call on the calendar below, or send a project brief — no extra redirects.",
+    "responseLabel": "I usually respond within 24 hours",
+    "projectTypes": [
+      "Mobile App Development",
+      "Admin Panel / Dashboard",
+      "Website Development",
+      "UI/UX Design",
+      "Full-Stack Project",
+      "Something Else"
+    ],
+    "budgets": [
+      "Under $500",
+      "Under $1,000",
+      "$1,000 – $3,000",
+      "$3,000 – $7,000",
+      "$7,000 – $15,000",
+      "$15,000+"
+    ],
+    "connectTitle": "Connect With Me",
+    "connectCopy": "Prefer a quick chat? Reach out on any platform below — WhatsApp usually gets the fastest reply."
+  },
+  "lead_capture": {
+    "title": "Get a free project estimate",
+    "subtitle": "Leave your email & phone — we'll reply within 24 hours.",
+    "delayMs": 12000
+  }
+}

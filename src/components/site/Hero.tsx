@@ -4,8 +4,11 @@ import { Reveal } from "./Reveal";
 import { SocialRow } from "./Socials";
 import { HeroMockups } from "./HeroMockups";
 import { TrustedStrip } from "./TrustedStrip";
+import { useCms } from "@/lib/cms-context";
 
 export function Hero() {
+  const { sections } = useCms();
+  const hero = sections.hero;
   const sectionRef = useRef<HTMLElement>(null);
   const mockupRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
@@ -88,32 +91,26 @@ export function Hero() {
                 <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
               <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-foreground/75">
-                Open for new projects
+                {hero.badge}
               </span>
               <span className="hidden h-3 w-px bg-white/15 sm:block" />
               <span className="hidden text-[0.68rem] font-medium tracking-wide text-muted-foreground sm:inline">
-                Remote · Global clients
+                {hero.badgeSecondary}
               </span>
             </div>
 
             <h1 className="mt-6 max-w-[18ch] font-display text-[2.4rem] font-semibold leading-[1.1] tracking-[-0.035em] text-foreground sm:mt-7 sm:text-[3.15rem] sm:leading-[1.06] lg:text-[3.4rem]">
-              Product-ready{" "}
-              <span className="text-gradient">Flutter apps</span>
-              <span className="text-foreground/88">, admin systems &amp; web platforms</span>
+              {hero.headlineBefore}
+              <span className="text-gradient">{hero.headlineAccent}</span>
+              <span className="text-foreground/88">{hero.headlineAfter}</span>
             </h1>
 
             <p className="mt-5 max-w-md text-[0.95rem] leading-7 text-foreground/68 sm:mt-6 sm:text-[1.02rem] sm:leading-8">
-              NexaSoft helps startups and growing teams ship cross-platform mobile apps, secure
-              dashboards, and conversion-focused websites — with clean architecture, clear
-              timelines, and code you fully own.
+              {hero.subcopy}
             </p>
 
             <ul className="mt-6 flex flex-wrap gap-2 sm:mt-7">
-              {[
-                "Flutter · iOS & Android",
-                "Admin panels & APIs",
-                "App Store & Play Store",
-              ].map((item) => (
+              {hero.chips.map((item) => (
                 <li
                   key={item}
                   className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-background/55 px-3 py-1.5 text-[0.72rem] font-medium text-foreground/80 shadow-[0_8px_24px_rgba(0,0,0,0.22)] backdrop-blur-md"
@@ -126,23 +123,23 @@ export function Hero() {
 
             <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:items-center">
               <a
-                href="#book"
+                href={hero.primaryCta.href}
                 className="hero-primary-cta group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_12px_30px_-14px_rgba(56,189,248,0.85)] transition-all duration-300 hover:-translate-y-0.5 sm:w-auto"
               >
-                Book a Call
+                {hero.primaryCta.label}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </a>
               <a
-                href="#projects"
+                href={hero.secondaryCta.href}
                 className="inline-flex w-full items-center justify-center rounded-xl border border-white/12 bg-white/[0.03] px-6 py-3.5 text-sm font-medium text-foreground/90 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/45 hover:bg-white/[0.05] hover:text-accent sm:w-auto"
               >
-                View selected work
+                {hero.secondaryCta.label}
               </a>
             </div>
 
             <div className="mt-8 border-t border-white/8 pt-6 sm:mt-9">
               <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                Connect
+                {hero.connectLabel}
               </p>
               <SocialRow />
             </div>

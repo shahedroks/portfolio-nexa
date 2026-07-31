@@ -67,7 +67,7 @@ export const Route = createFileRoute("/api/auth/google-lead")({
         }
 
         try {
-          const { saveLead, emailLeadSubmission, env } = await import("@/lib/contact-store.server");
+          const { saveLead, env } = await import("@/lib/contact-store.server");
           const { saveGoogleLeadToFirebase } = await import("@/lib/firebase.server");
           // Load .env into process.env for audience verification
           env("GOOGLE_CLIENT_ID");
@@ -95,25 +95,21 @@ export const Route = createFileRoute("/api/auth/google-lead")({
               source: payload.source,
             });
             firebaseSaved = fb.saved;
+            if (!fb.saved) {
+              console.warn("Firebase Google lead not saved:", fb.reason);
+            }
           } catch (err) {
             console.error("Firebase Google lead save failed:", err);
           }
 
-          try {
-            await emailLeadSubmission(payload);
-          } catch (err) {
-            const message = err instanceof Error ? err.message : "Could not notify host.";
-            return Response.json(
-              { success: false, error: message, id: record.id, firebaseSaved },
-              { status: 502 },
-            );
-          }
-
+          // Skip Resend for Google leads — visitor must not see Resend test-mode errors.
           return Response.json({
             success: true,
             message: "Thanks — your Google account was shared. We'll be in touch.",
             visitor: { name: payload.name, email: payload.email },
             firebaseSaved,
+            emailed: false,
+            id: record.id,
           });
         } catch (err) {
           const message = err instanceof Error ? err.message : "Google auth failed.";

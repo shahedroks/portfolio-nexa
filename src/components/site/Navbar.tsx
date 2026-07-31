@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 import { Menu, X, Moon, Sun, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const links = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
-];
+import { useCms } from "@/lib/cms-context";
 
 export function Navbar() {
+  const { settings } = useCms();
+  const links = settings.navLinks;
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -65,7 +59,7 @@ export function Navbar() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [links]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -92,23 +86,22 @@ export function Navbar() {
         )}
       >
         <nav className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
-          {/* Brand */}
           <a href="#home" className="group flex min-w-0 items-center gap-3">
             <span className="min-w-0">
               <span className="block truncate font-display text-[0.95rem] font-bold tracking-tight text-foreground">
-                NexaSoft<span className="text-accent">.</span>
+                {settings.brandName}
+                <span className="text-accent">.</span>
               </span>
               <span className="hidden items-center gap-1.5 text-[0.65rem] text-muted-foreground sm:flex">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400/70" />
                   <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 </span>
-                Available for hire
+                {settings.availabilityLabel}
               </span>
             </span>
           </a>
 
-          {/* Desktop links — pill shell */}
           <div className="hidden rounded-full border border-white/8 bg-white/[0.03] p-1.5 backdrop-blur-md lg:block">
             <ul className="flex items-center gap-0.5">
               {links.map((link) => {
@@ -132,7 +125,6 @@ export function Navbar() {
             </ul>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -147,7 +139,7 @@ export function Navbar() {
               href="#book"
               className="group hidden items-center gap-1.5 rounded-full bg-gradient-brand px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-[0_12px_30px_-14px_rgba(56,189,248,0.85)] transition-transform duration-300 hover:-translate-y-0.5 sm:inline-flex"
             >
-              Book a Call
+              {settings.ctaLabel}
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
 
@@ -163,7 +155,6 @@ export function Navbar() {
           </div>
         </nav>
 
-        {/* Scroll progress */}
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 bg-white/5"
           aria-hidden
@@ -178,7 +169,6 @@ export function Navbar() {
         </span>
       </div>
 
-      {/* Mobile panel */}
       {open ? (
         <div className="border-b border-white/8 bg-background/95 backdrop-blur-2xl lg:hidden">
           <div className="mx-auto max-w-6xl px-5 py-4 sm:px-8">
@@ -209,7 +199,7 @@ export function Navbar() {
               onClick={() => setOpen(false)}
               className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-brand px-4 py-3.5 text-sm font-semibold text-primary-foreground"
             >
-              Book a Call
+              {settings.ctaLabel}
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>

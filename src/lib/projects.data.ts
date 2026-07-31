@@ -14,6 +14,8 @@ export interface Project {
   role: string;
   features: string[];
   impact: string;
+  coverUrl?: string;
+  galleryUrls?: string[];
 }
 
 export const projects: Project[] = [

@@ -1,0 +1,128 @@
+[
+  {
+    "id": "1",
+    "slug": "fintrack",
+    "title": "FinTrack – Personal Finance App",
+    "description": "A cross-platform budgeting app with bank-style transaction sync, smart category insights and monthly spending forecasts.",
+    "category": "Mobile Apps",
+    "tech": ["Flutter", "Dart", "Firebase", "Bloc", "Stripe"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "problem": "Users were juggling multiple banking apps and spreadsheets with no clear picture of monthly cash flow.",
+    "solution": "Built a Flutter finance app with offline-first sync, category insights, biometric login, and forecast charts.",
+    "role": "Lead Flutter engineer — product UI, state management, Firebase, App Store & Play Store release.",
+    "features": [
+      "Biometric login & encrypted local vault",
+      "Smart spend categories + monthly forecasts",
+      "Push alerts for budget thresholds",
+      "Stripe-linked premium plans"
+    ],
+    "impact": "4.8★ store rating · 12k+ downloads in first quarter",
+    "order": 1
+  },
+  {
+    "id": "2",
+    "slug": "medicare",
+    "title": "MediCare Admin Dashboard",
+    "description": "Clinic management dashboard handling appointments, patient records, billing and staff roles for a multi-location healthcare group.",
+    "category": "Admin Panels",
+    "tech": ["Flutter Web", "Node.js", "Express.js", "PostgreSQL", "REST API"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "problem": "Twelve clinic locations tracked patients and billing across disconnected tools.",
+    "solution": "Delivered a role-based admin panel with live occupancy, appointment queues, and billing exports.",
+    "role": "Full-stack — Flutter Web UI, Node API, PostgreSQL schema, ops training.",
+    "features": [
+      "Role-based staff access",
+      "Realtime appointment board",
+      "Patient records & billing",
+      "Occupancy analytics"
+    ],
+    "impact": "Ops team saves ~15 hours/week on manual admin work",
+    "order": 2
+  },
+  {
+    "id": "3",
+    "slug": "shopease",
+    "title": "ShopEase E-commerce Website",
+    "description": "Conversion-focused storefront with product filtering, guest checkout and Stripe payments.",
+    "category": "Websites",
+    "tech": ["React", "Node.js", "MongoDB", "Stripe", "Tailwind CSS"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "problem": "Legacy storefront was slow on mobile and leaking conversions at checkout.",
+    "solution": "Rebuilt the storefront for performance, clearer UX, and Stripe guest checkout.",
+    "role": "Frontend + payments integration, performance pass, launch support.",
+    "features": [
+      "Faceted product filtering",
+      "Guest checkout + Stripe",
+      "Mobile-first PDP layouts",
+      "Order tracking emails"
+    ],
+    "impact": "PageSpeed 61 → 97 · conversions up 34% post-launch",
+    "order": 3
+  },
+  {
+    "id": "4",
+    "slug": "ridenow",
+    "title": "RideNow Delivery App UI/UX",
+    "description": "End-to-end product design for a last-mile delivery startup: flows, wireframes, and a high-fidelity prototype.",
+    "category": "UI/UX",
+    "tech": ["Figma", "Prototyping", "Design System"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "problem": "Founders needed a clear product vision before investing in engineering.",
+    "solution": "Mapped user journeys and delivered a 40-screen prototype with a reusable design system.",
+    "role": "Product designer — research synthesis, UI kit, interactive prototype.",
+    "features": [
+      "Driver & customer flows",
+      "40-screen hi-fi prototype",
+      "Component design system",
+      "Handoff-ready specs"
+    ],
+    "impact": "Design system cut engineering UI build time by ~30%",
+    "order": 4
+  },
+  {
+    "id": "5",
+    "slug": "edulearn",
+    "title": "EduLearn LMS Admin Panel",
+    "description": "Learning management back office for course publishing, cohort progress, certificates and instructor payouts.",
+    "category": "Admin Panels",
+    "tech": ["Flutter Web", "Node.js", "MySQL", "REST API", "Provider"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "problem": "Instructors and admins lacked a single place to manage courses and student progress.",
+    "solution": "Built an LMS admin with cohorts, certificates, and payouts for 8,000+ students.",
+    "role": "Full-stack Flutter Web + Node + MySQL.",
+    "features": [
+      "Course publishing workflow",
+      "Cohort progress tracking",
+      "Certificate generation",
+      "Instructor payouts"
+    ],
+    "impact": "Supports 8,000+ active students across cohorts",
+    "order": 5
+  },
+  {
+    "id": "6",
+    "slug": "fitpulse",
+    "title": "FitPulse Fitness Tracker App",
+    "description": "Workout and habit tracker with wearable sync, streak mechanics and coach messaging.",
+    "category": "Mobile Apps",
+    "tech": ["Flutter", "Firebase", "HealthKit", "Google Fit", "Bloc"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "problem": "Early fitness users abandoned tracking apps that felt cluttered and unmotivating.",
+    "solution": "Shipped a focused Flutter tracker with streaks, wearables, and coach chat.",
+    "role": "Lead Flutter engineer — HealthKit/Google Fit, Firebase, store releases.",
+    "features": [
+      "Wearable sync",
+      "Streak & goal loops",
+      "Coach messaging",
+      "Subscription unlocks"
+    ],
+    "impact": "4.8★ on both stores after a 3-month launch cycle",
+    "order": 6
+  }
+]

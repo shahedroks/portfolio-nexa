@@ -18,52 +18,65 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { WhyMe } from "@/components/site/WhyMe";
 import { Contact } from "@/components/site/Contact";
 import { About } from "@/components/site/About";
-
-const seo = {
-  title: "Flutter Developer for US Clients | Mobile App, Admin Panel & Web — NexaSoft",
-  description:
-    "Hire NexaSoft for Flutter mobile apps, admin dashboards, and conversion-focused websites. Remote-friendly delivery for US startups and growing teams.",
-};
+import { CmsProvider } from "@/lib/cms-context";
+import { getCmsDefaults } from "@/lib/cms.defaults";
+import type { CmsBundle } from "@/lib/cms.types";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: seo.title },
-      { name: "description", content: seo.description },
-      { property: "og:title", content: seo.title },
-      { property: "og:description", content: seo.description },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: seo.title },
-      { name: "twitter:description", content: seo.description },
-    ],
-  }),
+  loader: async (): Promise<CmsBundle> => {
+    try {
+      const { getCmsBundle } = await import("@/lib/cms.server");
+      return await getCmsBundle();
+    } catch (err) {
+      console.error("CMS loader failed:", err);
+      return getCmsDefaults();
+    }
+  },
+  head: ({ loaderData }) => {
+    const seo = loaderData?.settings.seo ?? getCmsDefaults().settings.seo;
+    return {
+      meta: [
+        { title: seo.title },
+        { name: "description", content: seo.description },
+        { property: "og:title", content: seo.title },
+        { property: "og:description", content: seo.description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: seo.title },
+        { name: "twitter:description", content: seo.description },
+      ],
+    };
+  },
   component: HomePage,
 });
 
 function HomePage() {
+  const cms = Route.useLoaderData();
+
   return (
-    <div className="relative min-h-screen overflow-x-hidden">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Services />
-        <Portfolio />
-        <Process />
-        <TechStack />
-        <WhyMe />
-        <Pricing />
-        <HireWithConfidence />
-        <Testimonials />
-        <FAQ />
-        <Contact />
-      </main>
-      <Footer />
-      <SideDock />
-      <ChatWidget />
-      <BackToTop />
-      <LeadCapture />
-    </div>
+    <CmsProvider value={cms}>
+      <div className="relative min-h-screen overflow-x-hidden">
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <Services />
+          <Portfolio />
+          <Process />
+          <TechStack />
+          <WhyMe />
+          <Pricing />
+          <HireWithConfidence />
+          <Testimonials />
+          <FAQ />
+          <Contact />
+        </main>
+        <Footer />
+        <SideDock />
+        <ChatWidget />
+        <BackToTop />
+        <LeadCapture />
+      </div>
+    </CmsProvider>
   );
 }

@@ -12,24 +12,7 @@ import { cn } from "@/lib/utils";
 import { BookingEmbed } from "./BookingEmbed";
 import { Reveal, SectionHeading } from "./Reveal";
 import { SocialRow } from "./Socials";
-
-const projectTypes = [
-  "Mobile App Development",
-  "Admin Panel / Dashboard",
-  "Website Development",
-  "UI/UX Design",
-  "Full-Stack Project",
-  "Something Else",
-];
-
-const budgets = [
-  "Under $500",
-  "Under $1,000",
-  "$1,000 – $3,000",
-  "$3,000 – $7,000",
-  "$7,000 – $15,000",
-  "$15,000+",
-];
+import { useCms } from "@/lib/cms-context";
 
 type Tab = "meeting" | "brief";
 type StatusType = "idle" | "loading" | "success" | "error";
@@ -137,6 +120,7 @@ function tabFromHash(): Tab {
 }
 
 export function Contact() {
+  const { contact } = useCms().sections;
   const [tab, setTab] = useState<Tab>("meeting");
   const [projectStatus, setProjectStatus] = useState<Status>({ type: "idle" });
 
@@ -188,9 +172,9 @@ export function Contact() {
     <section id="contact" className="section-pad bg-surface/40">
       <div id="book" className="mx-auto max-w-6xl scroll-mt-28 px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Contact"
-          title="Let's Build Something Great Together"
-          subtitle="Book a discovery call on the calendar below, or send a project brief — no extra redirects."
+          eyebrow={contact.eyebrow}
+          title={contact.title}
+          subtitle={contact.subtitle}
         />
 
         <div className="mx-auto mt-12 grid max-w-5xl gap-6">
@@ -198,7 +182,7 @@ export function Contact() {
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5">
               <Clock className="h-3.5 w-3.5 text-accent" />
               <span className="text-[0.7rem] font-medium tracking-wide text-foreground/80">
-                I usually respond within 24 hours
+                {contact.responseLabel}
               </span>
             </div>
           </Reveal>
@@ -300,7 +284,7 @@ export function Contact() {
 
                     <div>
                       <label htmlFor="phone" className="mb-2 block text-sm font-medium">
-                        Phone / WhatsApp
+                        WhatsApp
                       </label>
                       <input
                         id="phone"
@@ -327,7 +311,7 @@ export function Contact() {
                           <option value="" disabled>
                             Select a project type
                           </option>
-                          {projectTypes.map((type) => (
+                          {contact.projectTypes.map((type) => (
                             <option key={type} value={type}>
                               {type}
                             </option>
@@ -348,7 +332,7 @@ export function Contact() {
                           <option value="" disabled>
                             Select a budget range
                           </option>
-                          {budgets.map((budget) => (
+                          {contact.budgets.map((budget) => (
                             <option key={budget} value={budget}>
                               {budget}
                             </option>
@@ -388,11 +372,8 @@ export function Contact() {
 
           <Reveal delay={140}>
             <div className="surface-card flex flex-col items-center gap-4 p-7 text-center">
-              <h3 className="text-lg font-semibold">Connect With Me</h3>
-              <p className="max-w-md text-sm text-muted-foreground">
-                Prefer a quick chat? Reach out on any platform below — WhatsApp usually gets the
-                fastest reply.
-              </p>
+              <h3 className="text-lg font-semibold">{contact.connectTitle}</h3>
+              <p className="max-w-md text-sm text-muted-foreground">{contact.connectCopy}</p>
               <SocialRow withEmail className="justify-center" />
             </div>
           </Reveal>

@@ -44,19 +44,32 @@ export const Route = createFileRoute("/api/contact")({
         const { saveSubmission, emailContactSubmission } = await import(
           "@/lib/contact-store.server"
         );
+        const { saveContactToFirebase } = await import("@/lib/firebase.server");
         const record = saveSubmission(parsed.data);
 
+        let firebaseSaved = false;
+        try {
+          const fb = await saveContactToFirebase(record);
+          firebaseSaved = fb.saved;
+          if (!fb.saved) console.warn("Contact Firebase save:", fb.reason);
+        } catch (err) {
+          console.error("Contact Firebase save failed:", err);
+        }
+
+        let emailed = false;
         try {
           await emailContactSubmission(parsed.data);
+          emailed = true;
         } catch (err) {
-          const message = err instanceof Error ? err.message : "Could not deliver your message.";
-          return Response.json({ success: false, error: message, id: record.id }, { status: 502 });
+          console.error("Contact email notify failed:", err);
         }
 
         return Response.json({
           success: true,
           message: "Thanks! Your message was received. I'll reply within 24 hours.",
           id: record.id,
+          firebaseSaved,
+          emailed,
         });
       },
     },

@@ -12,11 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ApiChatIntentRouteImport } from './routes/api/chat-intent'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
 import { Route as ApiLeadRouteImport } from './routes/api/lead'
 import { Route as ApiMeetingRouteImport } from './routes/api/meeting'
 import { Route as ApiProjectsRouteImport } from './routes/api/projects'
+import { Route as PricingSuccessRouteImport } from './routes/pricing.success'
 import { Route as ApiAuthGoogleLeadRouteImport } from './routes/api/auth/google-lead'
+import { Route as ApiStripeCheckoutRouteImport } from './routes/api/stripe/checkout'
+import { Route as ApiWebhooksCalendlyRouteImport } from './routes/api/webhooks/calendly'
+import { Route as ApiWebhooksStripeRouteImport } from './routes/api/webhooks/stripe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,6 +36,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiChatIntentRoute = ApiChatIntentRouteImport.update({
+  id: '/api/chat-intent',
+  path: '/api/chat-intent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiContactRoute = ApiContactRouteImport.update({
@@ -53,9 +63,29 @@ const ApiProjectsRoute = ApiProjectsRouteImport.update({
   path: '/api/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PricingSuccessRoute = PricingSuccessRouteImport.update({
+  id: '/pricing/success',
+  path: '/pricing/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthGoogleLeadRoute = ApiAuthGoogleLeadRouteImport.update({
   id: '/api/auth/google-lead',
   path: '/api/auth/google-lead',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStripeCheckoutRoute = ApiStripeCheckoutRouteImport.update({
+  id: '/api/stripe/checkout',
+  path: '/api/stripe/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWebhooksCalendlyRoute = ApiWebhooksCalendlyRouteImport.update({
+  id: '/api/webhooks/calendly',
+  path: '/api/webhooks/calendly',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWebhooksStripeRoute = ApiWebhooksStripeRouteImport.update({
+  id: '/api/webhooks/stripe',
+  path: '/api/webhooks/stripe',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -63,32 +93,47 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/api/chat-intent': typeof ApiChatIntentRoute
   '/api/contact': typeof ApiContactRoute
   '/api/lead': typeof ApiLeadRoute
   '/api/meeting': typeof ApiMeetingRoute
   '/api/projects': typeof ApiProjectsRoute
+  '/pricing/success': typeof PricingSuccessRoute
   '/api/auth/google-lead': typeof ApiAuthGoogleLeadRoute
+  '/api/stripe/checkout': typeof ApiStripeCheckoutRoute
+  '/api/webhooks/calendly': typeof ApiWebhooksCalendlyRoute
+  '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/api/chat-intent': typeof ApiChatIntentRoute
   '/api/contact': typeof ApiContactRoute
   '/api/lead': typeof ApiLeadRoute
   '/api/meeting': typeof ApiMeetingRoute
   '/api/projects': typeof ApiProjectsRoute
+  '/pricing/success': typeof PricingSuccessRoute
   '/api/auth/google-lead': typeof ApiAuthGoogleLeadRoute
+  '/api/stripe/checkout': typeof ApiStripeCheckoutRoute
+  '/api/webhooks/calendly': typeof ApiWebhooksCalendlyRoute
+  '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/api/chat-intent': typeof ApiChatIntentRoute
   '/api/contact': typeof ApiContactRoute
   '/api/lead': typeof ApiLeadRoute
   '/api/meeting': typeof ApiMeetingRoute
   '/api/projects': typeof ApiProjectsRoute
+  '/pricing/success': typeof PricingSuccessRoute
   '/api/auth/google-lead': typeof ApiAuthGoogleLeadRoute
+  '/api/stripe/checkout': typeof ApiStripeCheckoutRoute
+  '/api/webhooks/calendly': typeof ApiWebhooksCalendlyRoute
+  '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,42 +141,62 @@ export interface FileRouteTypes {
     | '/'
     | '/privacy'
     | '/terms'
+    | '/api/chat-intent'
     | '/api/contact'
     | '/api/lead'
     | '/api/meeting'
     | '/api/projects'
+    | '/pricing/success'
     | '/api/auth/google-lead'
+    | '/api/stripe/checkout'
+    | '/api/webhooks/calendly'
+    | '/api/webhooks/stripe'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/privacy'
     | '/terms'
+    | '/api/chat-intent'
     | '/api/contact'
     | '/api/lead'
     | '/api/meeting'
     | '/api/projects'
+    | '/pricing/success'
     | '/api/auth/google-lead'
+    | '/api/stripe/checkout'
+    | '/api/webhooks/calendly'
+    | '/api/webhooks/stripe'
   id:
     | '__root__'
     | '/'
     | '/privacy'
     | '/terms'
+    | '/api/chat-intent'
     | '/api/contact'
     | '/api/lead'
     | '/api/meeting'
     | '/api/projects'
+    | '/pricing/success'
     | '/api/auth/google-lead'
+    | '/api/stripe/checkout'
+    | '/api/webhooks/calendly'
+    | '/api/webhooks/stripe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
+  ApiChatIntentRoute: typeof ApiChatIntentRoute
   ApiContactRoute: typeof ApiContactRoute
   ApiLeadRoute: typeof ApiLeadRoute
   ApiMeetingRoute: typeof ApiMeetingRoute
   ApiProjectsRoute: typeof ApiProjectsRoute
+  PricingSuccessRoute: typeof PricingSuccessRoute
   ApiAuthGoogleLeadRoute: typeof ApiAuthGoogleLeadRoute
+  ApiStripeCheckoutRoute: typeof ApiStripeCheckoutRoute
+  ApiWebhooksCalendlyRoute: typeof ApiWebhooksCalendlyRoute
+  ApiWebhooksStripeRoute: typeof ApiWebhooksStripeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -155,6 +220,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/chat-intent': {
+      id: '/api/chat-intent'
+      path: '/api/chat-intent'
+      fullPath: '/api/chat-intent'
+      preLoaderRoute: typeof ApiChatIntentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/contact': {
@@ -185,11 +257,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pricing/success': {
+      id: '/pricing/success'
+      path: '/pricing/success'
+      fullPath: '/pricing/success'
+      preLoaderRoute: typeof PricingSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/google-lead': {
       id: '/api/auth/google-lead'
       path: '/api/auth/google-lead'
       fullPath: '/api/auth/google-lead'
       preLoaderRoute: typeof ApiAuthGoogleLeadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stripe/checkout': {
+      id: '/api/stripe/checkout'
+      path: '/api/stripe/checkout'
+      fullPath: '/api/stripe/checkout'
+      preLoaderRoute: typeof ApiStripeCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/webhooks/calendly': {
+      id: '/api/webhooks/calendly'
+      path: '/api/webhooks/calendly'
+      fullPath: '/api/webhooks/calendly'
+      preLoaderRoute: typeof ApiWebhooksCalendlyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/webhooks/stripe': {
+      id: '/api/webhooks/stripe'
+      path: '/api/webhooks/stripe'
+      fullPath: '/api/webhooks/stripe'
+      preLoaderRoute: typeof ApiWebhooksStripeRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -199,11 +299,16 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
+  ApiChatIntentRoute: ApiChatIntentRoute,
   ApiContactRoute: ApiContactRoute,
   ApiLeadRoute: ApiLeadRoute,
   ApiMeetingRoute: ApiMeetingRoute,
   ApiProjectsRoute: ApiProjectsRoute,
+  PricingSuccessRoute: PricingSuccessRoute,
   ApiAuthGoogleLeadRoute: ApiAuthGoogleLeadRoute,
+  ApiStripeCheckoutRoute: ApiStripeCheckoutRoute,
+  ApiWebhooksCalendlyRoute: ApiWebhooksCalendlyRoute,
+  ApiWebhooksStripeRoute: ApiWebhooksStripeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

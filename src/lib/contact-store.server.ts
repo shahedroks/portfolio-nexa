@@ -88,9 +88,14 @@ async function sendResendEmail(params: {
   replyTo?: string;
 }) {
   const apiKey = env("RESEND_API_KEY");
-  const to = env("CONTACT_NOTIFY_EMAIL") ?? env("MEETING_HOST_EMAIL");
-  if (!apiKey || !to) {
-    throw new Error("Contact email is not configured (RESEND_API_KEY / CONTACT_NOTIFY_EMAIL).");
+  // Resend test mode can only deliver to the Resend account owner email
+  const to =
+    env("CONTACT_NOTIFY_EMAIL") ??
+    env("MEETING_HOST_EMAIL") ??
+    "shahedroks@gmail.com";
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY missing — skipping email notify.");
+    return { sent: false as const, reason: "RESEND_API_KEY missing" };
   }
 
   const from = env("RESEND_FROM_EMAIL") ?? "Portfolio <onboarding@resend.dev>";
@@ -104,8 +109,11 @@ async function sendResendEmail(params: {
   });
 
   if (error) {
-    throw new Error(error.message || "Failed to send email.");
+    // Soft-fail: never break lead/contact capture because of Resend test limits
+    console.warn("[Resend] email not sent:", error.message);
+    return { sent: false as const, reason: error.message };
   }
+  return { sent: true as const };
 }
 
 /** Email the project brief to your inbox. */

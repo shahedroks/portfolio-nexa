@@ -67,6 +67,25 @@ export const Route = createFileRoute("/api/meeting")({
         try {
           const meeting = await createGoogleMeetEvent(data);
 
+          let firebaseSaved = false;
+          try {
+            const { saveMeetingToFirebase } = await import("@/lib/firebase.server");
+            const fb = await saveMeetingToFirebase({
+              name: data.name,
+              email: data.email,
+              phone: data.phone,
+              date: data.date,
+              time: data.time,
+              notes: data.notes,
+              meetLink: meeting.meetLink,
+              eventId: meeting.eventId,
+            });
+            firebaseSaved = fb.saved;
+            if (!fb.saved) console.warn("Meeting Firebase save:", fb.reason);
+          } catch (err) {
+            console.error("Meeting Firebase save failed:", err);
+          }
+
           let emailSent = true;
           let emailWarning: string | undefined;
           try {
@@ -105,6 +124,7 @@ export const Route = createFileRoute("/api/meeting")({
           return Response.json({
             success: true,
             emailSent,
+            firebaseSaved,
             message: emailSent
               ? "Meeting booked! Check your email for the Google Meet link."
               : "Meeting booked with Google Meet. Email could not be sent (Resend test mode) — use the link below.",

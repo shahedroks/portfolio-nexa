@@ -25,15 +25,19 @@ declare global {
             getSkippedReason: () => string;
             getDismissedReason: () => string;
           }) => void) => void;
+          renderButton: (
+            parent: HTMLElement,
+            options: {
+              theme?: "outline" | "filled_blue" | "filled_black";
+              size?: "large" | "medium" | "small";
+              type?: "standard" | "icon";
+              text?: "signin_with" | "signup_with" | "continue_with" | "signin";
+              shape?: "rectangular" | "pill" | "circle" | "square";
+              logo_alignment?: "left" | "center";
+              width?: number | string;
+            },
+          ) => void;
           cancel: () => void;
-        };
-        oauth2: {
-          initTokenClient: (config: {
-            client_id: string;
-            scope: string;
-            callback: (response: { access_token?: string; error?: string }) => void;
-            prompt?: string;
-          }) => { requestAccessToken: (override?: { prompt?: string }) => void };
         };
       };
     };
@@ -50,17 +54,37 @@ export function SideDock() {
   const [error, setError] = useState<string | null>(null);
   const [showPicker, setShowPicker] = useState(false);
   const initialized = useRef(false);
+  const buttonHost = useRef<HTMLDivElement | null>(null);
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 
-  const submitCredential = useCallback(async (payload: { credential?: string; accessToken?: string }) => {
+  const renderGoogleButton = useCallback(() => {
+    if (!window.google?.accounts?.id || !buttonHost.current) return;
+    buttonHost.current.innerHTML = "";
+    window.google.accounts.id.renderButton(buttonHost.current, {
+      theme: "outline",
+      size: "large",
+      type: "standard",
+      text: "continue_with",
+      shape: "pill",
+      logo_alignment: "left",
+      width: 320,
+    });
+  }, []);
+
+  const submitCredential = useCallback(async (payload: { credential?: string }) => {
     setLoading(true);
     setError(null);
+    if (buttonHost.current) buttonHost.current.innerHTML = "";
     try {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 20000);
       const res = await fetch("/api/auth/google-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
+      window.clearTimeout(timeout);
       const json = (await res.json()) as { success: boolean; error?: string };
       if (!res.ok || !json.success) {
         setError(json.error ?? "Could not save Google profile.");
@@ -71,45 +95,14 @@ export function SideDock() {
       localStorage.setItem(LEAD_KEY, "1");
       localStorage.removeItem(SKIP_KEY);
       return true;
-    } catch {
-      setError("Network error. Please try again.");
+    } catch (err) {
+      const aborted = err instanceof Error && err.name === "AbortError";
+      setError(aborted ? "Saving timed out — please try again." : "Network error. Please try again.");
       return false;
     } finally {
       setLoading(false);
     }
   }, []);
-
-  const openAccountPicker = useCallback(() => {
-    setError(null);
-    if (!clientId) {
-      setError("Google Client ID missing (VITE_GOOGLE_CLIENT_ID).");
-      return;
-    }
-    if (!window.google?.accounts?.oauth2) {
-      setError("Google is still loading — try again in a second.");
-      return;
-    }
-
-    setLoading(true);
-    const client = window.google.accounts.oauth2.initTokenClient({
-      client_id: clientId,
-      scope: "openid email profile",
-      prompt: "select_account",
-      callback: (response) => {
-        if (response.error || !response.access_token) {
-          setLoading(false);
-          // popup closed / cancelled — keep chooser open so user can retry
-          if (response.error && response.error !== "popup_closed_by_user") {
-            setError(response.error);
-          }
-          return;
-        }
-        void submitCredential({ accessToken: response.access_token });
-      },
-    });
-
-    client.requestAccessToken({ prompt: "select_account" });
-  }, [clientId, submitCredential]);
 
   const showOneTap = useCallback(() => {
     if (!window.google?.accounts?.id || !clientId) return;
@@ -121,7 +114,6 @@ export function SideDock() {
           ? notification.getNotDisplayedReason()
           : notification.getSkippedReason();
         console.info("Google One Tap not shown:", reason);
-        // One Tap often blocked on localhost — show our Gmail chooser instead
         if (localStorage.getItem(SKIP_KEY) !== "1") {
           setShowPicker(true);
         }
@@ -135,7 +127,6 @@ export function SideDock() {
       setDone(true);
       return;
     }
-    // Always show Gmail chooser on visit (One Tap alone is unreliable)
     if (localStorage.getItem(SKIP_KEY) === "1") return;
     const t = window.setTimeout(() => setShowPicker(true), 400);
     return () => window.clearTimeout(t);
@@ -192,6 +183,13 @@ export function SideDock() {
     document.head.appendChild(script);
   }, [clientId, done, showOneTap, submitCredential]);
 
+  // Official Google button must be rendered after modal mounts + GIS ready
+  useEffect(() => {
+    if (!showPicker || !ready || loading) return;
+    const t = window.setTimeout(() => renderGoogleButton(), 50);
+    return () => window.clearTimeout(t);
+  }, [showPicker, ready, loading, renderGoogleButton, error]);
+
   const googleIcon = (
     <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
       <path
@@ -237,24 +235,7 @@ export function SideDock() {
               </button>
 
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white">
-                <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden>
-                  <path
-                    fill="#EA4335"
-                    d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.8-5.5 3.8-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.4 14.6 2.4 12 2.4 6.9 2.4 2.7 6.6 2.7 11.7S6.9 21 12 21c5.2 0 8.6-3.6 8.6-8.7 0-.6-.1-1-.2-1.5H12z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M3.9 8.1 7.1 10.5C8 8.3 9.8 6.8 12 6.8c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.4 14.6 2.4 12 2.4 8.3 2.4 5.1 4.5 3.9 8.1z"
-                  />
-                  <path
-                    fill="#4A90E2"
-                    d="M12 21c2.5 0 4.6-.8 6.1-2.3l-3-2.4c-.8.6-1.9 1-3.1 1-2.4 0-4.4-1.6-5.2-3.8l-3.2 2.4C5 18.8 8.2 21 12 21z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M6.8 13.5c-.2-.5-.3-1.1-.3-1.7s.1-1.2.3-1.7L3.6 7.7C2.9 9 2.5 10.4 2.5 11.8s.4 2.8 1.1 4.1l3.2-2.4z"
-                  />
-                </svg>
+                {googleIcon}
               </div>
 
               <h2 id="google-pick-title" className="text-lg font-semibold text-foreground">
@@ -270,26 +251,32 @@ export function SideDock() {
                 </p>
               ) : null}
 
-              <button
-                type="button"
-                onClick={openAccountPicker}
-                disabled={loading || !ready}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-70"
-              >
+              <div className="mt-5 flex min-h-[48px] w-full flex-col items-center justify-center gap-3">
                 {loading ? (
-                  <>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Connecting…
-                  </>
-                ) : ready ? (
-                  "Continue with Google"
-                ) : (
-                  "Loading Google…"
-                )}
-              </button>
+                    Saving your account…
+                  </div>
+                ) : null}
+
+                {!ready && !loading ? (
+                  <p className="text-sm text-muted-foreground">Loading Google…</p>
+                ) : null}
+
+                <div
+                  ref={buttonHost}
+                  className={cn(
+                    "flex w-full justify-center overflow-hidden",
+                    (loading || !ready) && "pointer-events-none absolute opacity-0",
+                  )}
+                  aria-hidden={loading || !ready}
+                />
+              </div>
 
               <p className="mt-3 text-center text-[0.7rem] text-muted-foreground">
-                A Google account window will open to pick your email.
+                {loading
+                  ? "Please wait — we’re saving your name and email."
+                  : "Use the Google button above to pick your email."}
               </p>
             </div>
           </div>,

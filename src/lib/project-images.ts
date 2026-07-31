@@ -1,9 +1,12 @@
+/**
+ * @deprecated Prefer project.coverUrl / galleryUrls from CMS (Firestore).
+ * Kept as a local-asset fallback map for older callers.
+ */
 import screenDashboard from "@/assets/hero-screen-dashboard.png";
 import screenFitness from "@/assets/hero-screen-fitness.png";
 import screenFinance from "@/assets/hero-screen-finance.png";
 import screenShop from "@/assets/hero-screen-shop.png";
 
-/** Preview screens used inside phone/browser frames on project cards. */
 export const projectImages: Record<string, string> = {
   fintrack: screenFinance,
   medicare: screenDashboard,

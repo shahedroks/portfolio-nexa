@@ -2,14 +2,13 @@ import { useState, type FormEvent } from "react";
 import { FileDown, Loader2, CheckCircle2, AlertCircle, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./Reveal";
+import { useCms } from "@/lib/cms-context";
 
 type Status = { type: "idle" | "loading" | "success" | "error"; message?: string };
 
-const PDF_PATH =
-  (import.meta.env.VITE_ESTIMATE_PDF_URL as string | undefined)?.trim() ||
-  "/project-estimate-guide.pdf";
-
 export function LeadMagnet() {
+  const pdfPath =
+    useCms().settings.links.estimatePdfUrl?.trim() || "/project-estimate-guide.pdf";
   const [status, setStatus] = useState<Status>({ type: "idle" });
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -44,7 +43,7 @@ export function LeadMagnet() {
 
       // Instant download after capture
       const link = document.createElement("a");
-      link.href = PDF_PATH;
+      link.href = pdfPath;
       link.download = "NexaSoft-Project-Estimate-Guide.pdf";
       link.rel = "noopener";
       document.body.appendChild(link);
@@ -149,7 +148,7 @@ export function LeadMagnet() {
                     <CheckCircle2 className="h-4 w-4 shrink-0" />
                     {status.message}{" "}
                     <a
-                      href={PDF_PATH}
+                      href={pdfPath}
                       download="NexaSoft-Project-Estimate-Guide.pdf"
                       className="font-semibold underline underline-offset-2"
                     >

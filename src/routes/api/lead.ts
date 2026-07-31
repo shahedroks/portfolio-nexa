@@ -56,6 +56,7 @@ export const Route = createFileRoute("/api/lead")({
 
         const source = parsed.data.source ?? "lead-popup";
         const { saveLead, emailLeadSubmission } = await import("@/lib/contact-store.server");
+        const { saveLeadToFirebase } = await import("@/lib/firebase.server");
         const payload = {
           name: parsed.data.name?.trim() || "PDF subscriber",
           email: parsed.data.email,
@@ -65,11 +66,21 @@ export const Route = createFileRoute("/api/lead")({
         };
         const record = saveLead(payload);
 
+        let firebaseSaved = false;
+        try {
+          const fb = await saveLeadToFirebase(record);
+          firebaseSaved = fb.saved;
+          if (!fb.saved) console.warn("Lead Firebase save:", fb.reason);
+        } catch (err) {
+          console.error("Lead Firebase save failed:", err);
+        }
+
+        let emailed = false;
         try {
           await emailLeadSubmission(payload);
+          emailed = true;
         } catch (err) {
-          const message = err instanceof Error ? err.message : "Could not deliver lead.";
-          return Response.json({ success: false, error: message, id: record.id }, { status: 502 });
+          console.error("Lead email notify failed:", err);
         }
 
         const message =
@@ -81,6 +92,8 @@ export const Route = createFileRoute("/api/lead")({
           success: true,
           message,
           id: record.id,
+          firebaseSaved,
+          emailed,
         });
       },
     },

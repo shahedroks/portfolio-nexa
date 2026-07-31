@@ -1,26 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { MessageCircle, X, Send, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const QUICK_REPLIES = [
-  "I need a Flutter app quote",
-  "Can we book a discovery call?",
-  "What's your typical timeline?",
-  "Do you build admin panels too?",
-];
-
-function whatsappNumber() {
-  return (
-    (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined)?.replace(/\D/g, "") ||
-    "8801000000000"
-  );
-}
-
-function messengerPage() {
-  return (
-    (import.meta.env.VITE_MESSENGER_PAGE as string | undefined)?.trim() || "nexasoft"
-  );
-}
+import { useCms } from "@/lib/cms-context";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -39,10 +20,12 @@ function MessengerIcon({ className }: { className?: string }) {
 }
 
 export function ChatWidget() {
+  const { settings } = useCms();
+  const chat = settings.chat;
+  const whatsappNumber = settings.links.whatsappNumber.replace(/\D/g, "") || "8801000000000";
+  const messengerPage = settings.links.messengerPage || "nexasoft";
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState(
-    "Hi NexaSoft — I visited your website and want to discuss a project.",
-  );
+  const [message, setMessage] = useState(chat.defaultMessage);
   const panelId = useId();
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -61,9 +44,22 @@ export function ChatWidget() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const text = message.trim() || "Hi NexaSoft — I'd like to chat about a project.";
-  const whatsappUrl = `https://wa.me/${whatsappNumber()}?text=${encodeURIComponent(text)}`;
-  const messengerUrl = `https://m.me/${messengerPage()}?text=${encodeURIComponent(text)}`;
+  const text = message.trim() || chat.fallbackMessage;
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+  const messengerUrl = `https://m.me/${messengerPage}?text=${encodeURIComponent(text)}`;
+
+  function logChatIntent(channel: "whatsapp" | "messenger" | "quick-reply" | "open") {
+    void fetch("/api/chat-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        channel,
+        message: text,
+        page: typeof window !== "undefined" ? window.location.pathname : "/",
+      }),
+      keepalive: true,
+    }).catch(() => {});
+  }
 
   return (
     <div className="fixed bottom-5 left-3 z-[56] flex flex-col items-start gap-3 sm:bottom-6 sm:left-5">
@@ -88,13 +84,13 @@ export function ChatWidget() {
           />
           <div className="relative flex items-start justify-between gap-3">
             <div>
-              <p className="text-sm font-semibold">Chat with NexaSoft</p>
+              <p className="text-sm font-semibold">{chat.title}</p>
               <p className="mt-0.5 flex items-center gap-1.5 text-xs text-primary-foreground/85">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inset-0 animate-ping rounded-full bg-emerald-300/80" />
                   <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-300" />
                 </span>
-                Usually replies within minutes
+                {chat.statusLabel}
               </p>
             </div>
             <button
@@ -110,12 +106,11 @@ export function ChatWidget() {
 
         <div className="space-y-3 p-4">
           <div className="rounded-2xl rounded-tl-md border border-border bg-surface-2/60 px-3.5 py-3 text-sm leading-relaxed text-foreground/85">
-            Hi! Ask anything about Flutter apps, admin panels, timelines, or pricing — pick a
-            channel below and we&apos;ll continue the chat instantly.
+            {chat.intro}
           </div>
 
           <div className="flex flex-wrap gap-1.5">
-            {QUICK_REPLIES.map((reply) => (
+            {chat.quickReplies.map((reply) => (
               <button
                 key={reply}
                 type="button"
@@ -149,6 +144,7 @@ export function ChatWidget() {
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={() => logChatIntent("whatsapp")}
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
             >
               <WhatsAppIcon className="h-4 w-4" />
@@ -159,6 +155,7 @@ export function ChatWidget() {
               href={messengerUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={() => logChatIntent("messenger")}
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0084FF] px-4 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
             >
               <MessengerIcon className="h-4 w-4" />
@@ -179,7 +176,12 @@ export function ChatWidget() {
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setOpen((v) => {
+            if (!v) logChatIntent("open");
+            return !v;
+          });
+        }}
         className={cn(
           "group relative inline-flex items-center gap-2.5 rounded-full px-4 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_16px_40px_-12px_rgba(56,189,248,0.65)] transition-all duration-300",
           open

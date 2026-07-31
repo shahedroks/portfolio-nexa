@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Github, Loader2, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionHeading } from "./Reveal";
-import { projectGalleries, projectImages } from "@/lib/project-images";
+import { useCms } from "@/lib/cms-context";
 import type { Project } from "@/lib/projects.data";
 import { cn } from "@/lib/utils";
 import {
@@ -12,9 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-const filters = ["All", "Mobile Apps", "Admin Panels", "Websites", "UI/UX"] as const;
-type Filter = (typeof filters)[number];
 
 async function fetchProjects(): Promise<Project[]> {
   const res = await fetch("/api/projects");
@@ -27,8 +24,17 @@ function isPhoneProject(project: Project) {
   return project.category === "Mobile Apps" || project.category === "UI/UX";
 }
 
+function projectCover(project: Project) {
+  return project.coverUrl || "";
+}
+
+function projectGallery(project: Project) {
+  if (project.galleryUrls?.length) return project.galleryUrls;
+  return project.coverUrl ? [project.coverUrl] : [];
+}
+
 function ProjectPreview({ project }: { project: Project }) {
-  const src = projectImages[project.slug];
+  const src = projectCover(project);
   const phone = isPhoneProject(project);
 
   if (phone) {
@@ -68,6 +74,9 @@ function ProjectPreview({ project }: { project: Project }) {
 }
 
 export function Portfolio() {
+  const portfolio = useCms().sections.portfolio;
+  const filters = portfolio.filters;
+  type Filter = string;
   const [active, setActive] = useState<Filter>("All");
   const [displayed, setDisplayed] = useState<Filter>("All");
   const [phase, setPhase] = useState<"idle" | "out" | "in">("idle");
@@ -107,9 +116,9 @@ export function Portfolio() {
     <section id="projects" className="section-pad bg-surface/40">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Portfolio"
-          title="Selected work from recent client projects"
-          subtitle="Apps, dashboards, and websites shipped for founders and agencies — with clear outcomes, not just screenshots."
+          eyebrow={portfolio.eyebrow}
+          title={portfolio.title}
+          subtitle={portfolio.subtitle}
         />
 
         <Reveal className="mt-10 flex flex-wrap justify-center gap-2">
@@ -255,7 +264,7 @@ export function Portfolio() {
               </DialogHeader>
 
               <div className="mt-2 grid gap-2 sm:grid-cols-3">
-                {(projectGalleries[selected.slug] ?? [projectImages[selected.slug]]).map((img, idx) => (
+                {projectGallery(selected).map((img, idx) => (
                   <div
                     key={`${selected.slug}-${idx}`}
                     className="overflow-hidden rounded-xl border border-border bg-surface-2"

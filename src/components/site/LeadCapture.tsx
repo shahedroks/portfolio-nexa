@@ -1,11 +1,13 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { X, Phone, Loader2, CheckCircle2, AlertCircle, MessageCircle } from "lucide-react";
+import { useCms } from "@/lib/cms-context";
 
 type Status = { type: "idle" | "loading" | "success" | "error"; message?: string };
 
 const STORAGE_KEY = "nexasoft-lead-dismissed";
 
 export function LeadCapture() {
+  const lead = useCms().sections.lead_capture;
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<Status>({ type: "idle" });
 
@@ -13,9 +15,9 @@ export function LeadCapture() {
     if (typeof window === "undefined") return;
     if (localStorage.getItem(STORAGE_KEY) === "1") return;
 
-    const timer = window.setTimeout(() => setOpen(true), 12_000);
+    const timer = window.setTimeout(() => setOpen(true), lead.delayMs || 12_000);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [lead.delayMs]);
 
   function dismiss() {
     setOpen(false);
@@ -84,11 +86,9 @@ export function LeadCapture() {
           </span>
           <div>
             <h2 id="lead-title" className="text-lg font-semibold">
-              Get a free project estimate
+              {lead.title}
             </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Leave your email &amp; phone — we&apos;ll reply within 24 hours.
-            </p>
+            <p className="mt-1 text-sm text-muted-foreground">{lead.subtitle}</p>
           </div>
         </div>
 
