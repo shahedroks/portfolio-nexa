@@ -38,6 +38,22 @@ export async function adminSaveSettings(settings: CmsSiteSettings) {
     stripMeta(settings as unknown as Record<string, unknown>),
     { merge: true },
   );
+  // Keep homepage Hero primary button in sync with Brand & SEO CTA label.
+  if (result.saved && settings.ctaLabel?.trim()) {
+    const heroDoc = await import("@/lib/firebase.server").then((m) =>
+      m.readFirestoreDoc<Record<string, unknown>>("cms_sections", "hero"),
+    );
+    const primaryCta = {
+      ...((heroDoc?.primaryCta as Record<string, unknown> | undefined) ?? {}),
+      label: settings.ctaLabel.trim(),
+    };
+    await writeFirestoreDoc(
+      "cms_sections",
+      "hero",
+      { primaryCta },
+      { merge: true },
+    );
+  }
   if (result.saved) clearCmsCache();
   return result;
 }

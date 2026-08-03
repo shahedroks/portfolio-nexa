@@ -120,7 +120,8 @@ function tabFromHash(): Tab {
 }
 
 export function Contact() {
-  const { contact } = useCms().sections;
+  const { settings, sections } = useCms();
+  const { contact } = sections;
   const [tab, setTab] = useState<Tab>("meeting");
   const [projectStatus, setProjectStatus] = useState<Status>({ type: "idle" });
 
@@ -210,7 +211,7 @@ export function Contact() {
                   )}
                 >
                   <CalendarClock className="h-4 w-4" />
-                  Book a Call
+                  {settings.ctaLabel || "Book a Call"}
                 </button>
                 <button
                   type="button"

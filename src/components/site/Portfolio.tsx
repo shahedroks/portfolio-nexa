@@ -66,7 +66,7 @@ function ProjectPreview({ project }: { project: Project }) {
 }
 
 export function Portfolio() {
-  const { sections, projects } = useCms();
+  const { sections, projects, settings } = useCms();
   const portfolio = sections.portfolio;
   const filters = portfolio.filters;
   type Filter = string;
@@ -317,7 +317,7 @@ export function Portfolio() {
                   onClick={() => setSelected(null)}
                   className="inline-flex items-center justify-center rounded-xl bg-gradient-brand px-5 py-2.5 text-sm font-semibold text-primary-foreground"
                 >
-                  Book a Call
+                  {settings.ctaLabel || "Book a Call"}
                 </a>
                 <a
                   href={selected.demoUrl}

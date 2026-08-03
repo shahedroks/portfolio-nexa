@@ -10,7 +10,7 @@ import {
   readFirestoreDoc,
 } from "@/lib/firebase.server";
 
-const CACHE_TTL_MS = 60_000;
+const CACHE_TTL_MS = 5_000;
 let cache: { at: number; data: CmsBundle } | null = null;
 
 const SECTION_IDS = [

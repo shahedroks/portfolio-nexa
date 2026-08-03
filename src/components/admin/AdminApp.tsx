@@ -351,8 +351,25 @@ export function AdminApp() {
       setStatus({ type: "error", message: json.error || "Save failed" });
       return;
     }
-    setCms((c) => (c ? { ...c, settings: next } : c));
-    setStatus({ type: "success", message: "Saved to Firebase." });
+    setCms((c) => {
+      if (!c) return c;
+      const label = next.ctaLabel?.trim() || c.sections.hero.primaryCta.label;
+      return {
+        ...c,
+        settings: next,
+        sections: {
+          ...c.sections,
+          hero: {
+            ...c.sections.hero,
+            primaryCta: { ...c.sections.hero.primaryCta, label },
+          },
+        },
+      };
+    });
+    setStatus({
+      type: "success",
+      message: "Saved to Firebase. Hard-refresh the homepage (Ctrl+Shift+R) to see it.",
+    });
   }
 
   async function saveSection(id: CmsSectionId, data: CmsSections[CmsSectionId]) {
@@ -639,9 +656,20 @@ export function AdminApp() {
         <main className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-6">
           <StatusBanner status={status} />
           {!firebaseConfigured ? (
-            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-              Firebase is not configured. Add <code>serviceAccountKey.json</code>, run{" "}
-              <code>npm run seed:cms</code>, then restart. Saves will fail until then.
+            <div className="space-y-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+              <p className="font-medium">Firebase is not configured on this server.</p>
+              <p>
+                <strong>Local:</strong> put <code>serviceAccountKey.json</code> in project root, then restart
+                dev.
+              </p>
+              <p>
+                <strong>Vercel:</strong> Settings → Environment Variables e add{" "}
+                <code>FIREBASE_PROJECT_ID</code>, <code>FIREBASE_CLIENT_EMAIL</code>,{" "}
+                <code>FIREBASE_PRIVATE_KEY</code>, <code>FIREBASE_STORAGE_BUCKET</code> → then Redeploy.
+              </p>
+              <p className="text-amber-100/80">
+                JSON file Vercel e upload hoy na — env vars dorkar. Values JSON key file theke copy korun.
+              </p>
             </div>
           ) : null}
 
@@ -661,7 +689,7 @@ export function AdminApp() {
                 [
                   ["brandName", "Brand name"],
                   ["availabilityLabel", "Availability label"],
-                  ["ctaLabel", "CTA label"],
+                  ["ctaLabel", "CTA label (Navbar + Hero button)"],
                 ] as const
               ).map(([key, label]) => (
                 <div key={key}>
