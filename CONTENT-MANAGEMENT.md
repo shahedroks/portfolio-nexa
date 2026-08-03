@@ -12,10 +12,10 @@ Ei document e full website er **konta kothay theke manage** hoy, ta map kora ach
 
 ## Deploy note (Vercel)
 
-Build must use Nitro **`vercel`** preset (set in `vite.config.ts`).  
-Default Lovable preset is `cloudflare-module` — that causes **500 on every route** on Vercel ("This page didn't load").
+1. Nitro preset must be **`vercel`** (`vite.config.ts`) — not Cloudflare.
+2. Build runs `scripts/patch-dirname.mjs` after Vite — fixes `firebase-admin` ESM `__dirname` crash that caused **500 on every route**.
 
-After changing `vite.config.ts`, push to `main` and redeploy (or Redeploy without cache in Vercel).
+After pulling these fixes: push to `main` → Vercel Redeploy (no cache if needed).
 
 ---
 
