@@ -29,6 +29,10 @@ secrets/
 .wrangler/
 .dev.vars
 
+# Vercel / Nitro build output
+.vercel/
+.output/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

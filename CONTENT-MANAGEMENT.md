@@ -10,6 +10,15 @@ Ei document e full website er **konta kothay theke manage** hoy, ta map kora ach
 
 ---
 
+## Deploy note (Vercel)
+
+Build must use Nitro **`vercel`** preset (set in `vite.config.ts`).  
+Default Lovable preset is `cloudflare-module` — that causes **500 on every route** on Vercel ("This page didn't load").
+
+After changing `vite.config.ts`, push to `main` and redeploy (or Redeploy without cache in Vercel).
+
+---
+
 ## Admin panel (`/admin`)
 
 Google Sign-In only. Allowed emails (default / `.env` `ADMIN_EMAILS`):
