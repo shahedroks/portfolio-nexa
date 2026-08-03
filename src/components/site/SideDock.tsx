@@ -128,16 +128,31 @@ export function SideDock() {
       return;
     }
     if (localStorage.getItem(SKIP_KEY) === "1") return;
+    // Don't open the picker if Google Sign-In isn't configured for this build.
+    if (!clientId) return;
     const t = window.setTimeout(() => setShowPicker(true), 400);
     return () => window.clearTimeout(t);
-  }, []);
+  }, [clientId]);
 
   useEffect(() => {
-    if (!clientId || done) return;
+    if (!clientId || done) {
+      if (!clientId && showPicker) {
+        setError("Google Sign-In is not configured on this deployment (missing VITE_GOOGLE_CLIENT_ID).");
+      }
+      return;
+    }
+
+    let cancelled = false;
+    const loadTimeout = window.setTimeout(() => {
+      if (!cancelled && !window.google?.accounts?.id) {
+        setError("Google Sign-In is taking too long. Check your connection, or add this domain in Google Cloud → Authorized JavaScript origins.");
+      }
+    }, 12_000);
 
     const boot = () => {
-      if (!window.google?.accounts?.id) return;
+      if (cancelled || !window.google?.accounts?.id) return;
       setReady(true);
+      setError(null);
       if (initialized.current) return;
       if (localStorage.getItem(LEAD_KEY) === "1") return;
 
@@ -159,18 +174,29 @@ export function SideDock() {
 
     if (window.google?.accounts?.id) {
       boot();
-      return;
+      return () => {
+        cancelled = true;
+        window.clearTimeout(loadTimeout);
+      };
     }
 
     const existing = document.querySelector<HTMLScriptElement>('script[data-google-gsi="1"]');
     if (existing) {
       if (window.google?.accounts?.id) {
         boot();
-        return;
+      } else {
+        const onLoad = () => boot();
+        existing.addEventListener("load", onLoad);
+        return () => {
+          cancelled = true;
+          window.clearTimeout(loadTimeout);
+          existing.removeEventListener("load", onLoad);
+        };
       }
-      const onLoad = () => boot();
-      existing.addEventListener("load", onLoad);
-      return () => existing.removeEventListener("load", onLoad);
+      return () => {
+        cancelled = true;
+        window.clearTimeout(loadTimeout);
+      };
     }
 
     const script = document.createElement("script");
@@ -179,9 +205,15 @@ export function SideDock() {
     script.defer = true;
     script.dataset.googleGsi = "1";
     script.onload = () => boot();
-    script.onerror = () => setError("Google Sign-In failed to load.");
+    script.onerror = () => {
+      if (!cancelled) setError("Google Sign-In failed to load. Please allow accounts.google.com and try again.");
+    };
     document.head.appendChild(script);
-  }, [clientId, done, showOneTap, submitCredential]);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(loadTimeout);
+    };
+  }, [clientId, done, showOneTap, submitCredential, showPicker]);
 
   // Official Google button must be rendered after modal mounts + GIS ready
   useEffect(() => {
@@ -260,7 +292,9 @@ export function SideDock() {
                 ) : null}
 
                 {!ready && !loading ? (
-                  <p className="text-sm text-muted-foreground">Loading Google…</p>
+                  <p className="text-sm text-muted-foreground">
+                    {error ? "Google Sign-In unavailable." : "Loading Google…"}
+                  </p>
                 ) : null}
 
                 <div
