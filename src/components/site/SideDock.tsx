@@ -76,6 +76,21 @@ export function SideDock() {
     setError(null);
     if (buttonHost.current) buttonHost.current.innerHTML = "";
     try {
+      // Admin emails → session cookie + redirect to CMS panel
+      if (payload.credential) {
+        const adminRes = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ credential: payload.credential }),
+        });
+        const adminJson = (await adminRes.json()) as { success?: boolean };
+        if (adminRes.ok && adminJson.success) {
+          setShowPicker(false);
+          window.location.assign("/admin");
+          return true;
+        }
+      }
+
       const controller = new AbortController();
       const timeout = window.setTimeout(() => controller.abort(), 20000);
       const res = await fetch("/api/auth/google-lead", {
@@ -287,7 +302,7 @@ export function SideDock() {
                 {loading ? (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Saving your account…
+                    Signing in…
                   </div>
                 ) : null}
 
@@ -309,8 +324,11 @@ export function SideDock() {
 
               <p className="mt-3 text-center text-[0.7rem] text-muted-foreground">
                 {loading
-                  ? "Please wait — we’re saving your name and email."
+                  ? "Checking your account…"
                   : "Use the Google button above to pick your email."}
+              </p>
+              <p className="mt-2 text-center text-[0.65rem] text-muted-foreground/80">
+                Admin accounts open the CMS at <span className="text-accent">/admin</span>
               </p>
             </div>
           </div>,

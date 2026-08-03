@@ -31,14 +31,19 @@ Open: **http://localhost:8080/admin** (or your current Vite port)
 From the panel you can edit:
 
 - Brand, SEO, links, chat, nav, footer
-- Every homepage section (hero → lead_capture)
-- Projects (create / edit / delete + image upload)
-- Image/PDF upload → Firebase Storage URL
+- Every homepage section (hero → lead_capture) + image upload
+- Projects (create / edit / delete + cover/gallery upload)
+
+**Login paths**
+
+1. Open `/admin` → Google Sign-In with an allowed email  
+2. Or homepage Google popup with `ssnexasoft777@gmail.com` / `shahedroks@gmail.com` → auto-redirect to `/admin`
 
 Saves write to Firestore (`site_settings`, `cms_sections`, `projects`).  
-**Requires** `serviceAccountKey.json` + seed — otherwise panel opens but Save shows Firebase offline error.
+**Requires** `serviceAccountKey.json` (local) / Firebase credentials on Vercel + seed — otherwise panel opens but Save shows Firebase offline error.
 
-Google Cloud Console e authorized JS origin add korun: `http://localhost:8080` (and 8081/8082 if needed).
+Google Cloud Console e authorized JS origin add korun: `http://localhost:8080` (and 8081/8082 if needed) + `https://nexasoftappteam.vercel.app`.
+Also set `VITE_GOOGLE_CLIENT_ID` in Vercel env and redeploy.
 
 ---
 

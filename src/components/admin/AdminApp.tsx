@@ -471,6 +471,35 @@ export function AdminApp() {
             }
           />
         ) : null}
+        {id === "hero" ? (
+          <div className="space-y-3 rounded-xl border border-white/10 bg-background/30 p-3">
+            <p className="text-sm font-medium">Hero mockup screens</p>
+            {sections.hero.mockups.screens.map((screen, index) => (
+              <ImageUrlField
+                key={`${screen.kind}-${index}`}
+                label={`${screen.kind} — ${screen.alt || `screen ${index + 1}`}`}
+                value={screen.src}
+                onChange={(url) =>
+                  setCms((c) => {
+                    if (!c) return c;
+                    const screens = [...c.sections.hero.mockups.screens];
+                    screens[index] = { ...screens[index], src: url };
+                    return {
+                      ...c,
+                      sections: {
+                        ...c.sections,
+                        hero: {
+                          ...c.sections.hero,
+                          mockups: { ...c.sections.hero.mockups, screens },
+                        },
+                      },
+                    };
+                  })
+                }
+              />
+            ))}
+          </div>
+        ) : null}
         <JsonEditor
           value={sections[id]}
           onChange={(next) =>
@@ -504,7 +533,7 @@ export function AdminApp() {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">NexaSoft CMS</p>
           <h1 className="mt-2 text-2xl font-semibold text-foreground">Admin login</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Sign in with an allowed Google account to manage site content.
+            Sign in with an allowed Google account to manage brand, links, images, projects, and every homepage section.
           </p>
           <ul className="mt-4 space-y-1 rounded-xl border border-border bg-background/40 p-3 text-xs text-muted-foreground">
             {(allowlist.length ? allowlist : ["ssnexasoft777@gmail.com", "shahedroks@gmail.com"]).map(
@@ -513,6 +542,9 @@ export function AdminApp() {
               ),
             )}
           </ul>
+          <p className="mt-3 text-xs text-muted-foreground">
+            You can also open the homepage Google popup with these emails — you will be redirected here automatically.
+          </p>
           <div className="mt-6 flex justify-center" ref={googleBtn} />
           {!clientId ? (
             <p className="mt-3 text-sm text-destructive">Missing VITE_GOOGLE_CLIENT_ID in .env</p>
