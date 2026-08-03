@@ -33,6 +33,9 @@ secrets/
 .vercel/
 .output/
 
+# Local CMS dumps
+cms-all-data.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

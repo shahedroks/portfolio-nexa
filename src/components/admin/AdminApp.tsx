@@ -6,6 +6,7 @@ import {
   Loader2,
   LogOut,
   Plus,
+  RefreshCw,
   Save,
   Trash2,
   Upload,
@@ -223,6 +224,8 @@ export function AdminApp() {
   const [tab, setTab] = useState("settings");
   const [status, setStatus] = useState<Status>({ type: "idle" });
   const [projectDraft, setProjectDraft] = useState<CmsProject | null>(null);
+  const [cmsSource, setCmsSource] = useState<"firebase" | "defaults" | null>(null);
+  const [reloading, setReloading] = useState(false);
   const googleBtn = useRef<HTMLDivElement>(null);
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 
@@ -255,9 +258,30 @@ export function AdminApp() {
     if (!res.ok || !json.success || !json.data) {
       throw new Error(json.error || "Failed to load CMS");
     }
-    setFirebaseConfigured(Boolean(json.firebaseConfigured));
+    const fromFirebase = Boolean(json.firebaseConfigured);
+    setFirebaseConfigured(fromFirebase);
+    setCmsSource(fromFirebase ? "firebase" : "defaults");
     setCms(json.data);
   }, []);
+
+  const reloadCms = useCallback(async () => {
+    setReloading(true);
+    setStatus({ type: "loading", message: "Loading current CMS data…" });
+    try {
+      await loadCms();
+      setStatus({
+        type: "success",
+        message: "Admin fields refreshed with the data already set up (Firebase / defaults).",
+      });
+    } catch (err) {
+      setStatus({
+        type: "error",
+        message: err instanceof Error ? err.message : "Reload failed",
+      });
+    } finally {
+      setReloading(false);
+    }
+  }, [loadCms]);
 
   useEffect(() => {
     (async () => {
@@ -609,8 +633,22 @@ export function AdminApp() {
                   : "bg-amber-500/15 text-amber-300",
               )}
             >
-              {firebaseConfigured ? "Firebase connected" : "Firebase offline (local defaults)"}
+              {cmsSource === "firebase"
+                ? "Showing live Firebase data"
+                : firebaseConfigured
+                  ? "Firebase connected"
+                  : "Showing local defaults"}
             </span>
+            <button
+              type="button"
+              disabled={reloading}
+              onClick={() => void reloadCms()}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm hover:bg-white/5 disabled:opacity-60"
+              title="Reload the values already saved in Firebase"
+            >
+              <RefreshCw className={cn("h-4 w-4", reloading && "animate-spin")} />
+              <span className="hidden sm:inline">Reload data</span>
+            </button>
             <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2 py-1 pr-3">
               {admin.picture ? (
                 <img src={admin.picture} alt="" className="h-7 w-7 rounded-full" />
@@ -655,6 +693,12 @@ export function AdminApp() {
 
         <main className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-6">
           <StatusBanner status={status} />
+          {cmsSource === "firebase" ? (
+            <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
+              Form e je values dekhachen, oigula already set up kora CMS data (Firestore). Change kore Save
+              korle website update hobe — tarpor homepage hard refresh korun.
+            </div>
+          ) : null}
           {!firebaseConfigured ? (
             <div className="space-y-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
               <p className="font-medium">Firebase is not configured on this server.</p>
