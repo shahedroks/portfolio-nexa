@@ -11,7 +11,6 @@ import { Services } from "@/components/site/Services";
 import { BackToTop } from "@/components/site/BackToTop";
 import { ChatWidget } from "@/components/site/ChatWidget";
 import { HireWithConfidence } from "@/components/site/HireWithConfidence";
-import { LeadCapture } from "@/components/site/LeadCapture";
 import { SideDock } from "@/components/site/SideDock";
 import { TechStack } from "@/components/site/TechStack";
 import { Testimonials } from "@/components/site/Testimonials";
@@ -19,19 +18,12 @@ import { WhyMe } from "@/components/site/WhyMe";
 import { Contact } from "@/components/site/Contact";
 import { About } from "@/components/site/About";
 import { CmsProvider } from "@/lib/cms-context";
+import { fetchCmsBundle } from "@/lib/cms.fn";
 import { getCmsDefaults } from "@/lib/cms.defaults";
 import type { CmsBundle } from "@/lib/cms.types";
 
 export const Route = createFileRoute("/")({
-  loader: async (): Promise<CmsBundle> => {
-    try {
-      const { getCmsBundle } = await import("@/lib/cms.server");
-      return await getCmsBundle();
-    } catch (err) {
-      console.error("CMS loader failed:", err);
-      return getCmsDefaults();
-    }
-  },
+  loader: async (): Promise<CmsBundle> => fetchCmsBundle(),
   head: ({ loaderData }) => {
     const seo = loaderData?.settings.seo ?? getCmsDefaults().settings.seo;
     return {
@@ -75,7 +67,6 @@ function HomePage() {
         <SideDock />
         <ChatWidget />
         <BackToTop />
-        <LeadCapture />
       </div>
     </CmsProvider>
   );

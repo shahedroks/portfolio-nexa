@@ -10,22 +10,37 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiChatIntentRouteImport } from './routes/api/chat-intent'
+import { Route as ApiCmsStatusRouteImport } from './routes/api/cms-status'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
 import { Route as ApiLeadRouteImport } from './routes/api/lead'
 import { Route as ApiMeetingRouteImport } from './routes/api/meeting'
 import { Route as ApiProjectsRouteImport } from './routes/api/projects'
 import { Route as PricingSuccessRouteImport } from './routes/pricing.success'
+import { Route as ApiAdminCmsRouteImport } from './routes/api/admin/cms'
+import { Route as ApiAdminLoginRouteImport } from './routes/api/admin/login'
+import { Route as ApiAdminLogoutRouteImport } from './routes/api/admin/logout'
+import { Route as ApiAdminMeRouteImport } from './routes/api/admin/me'
 import { Route as ApiAuthGoogleLeadRouteImport } from './routes/api/auth/google-lead'
 import { Route as ApiStripeCheckoutRouteImport } from './routes/api/stripe/checkout'
 import { Route as ApiWebhooksCalendlyRouteImport } from './routes/api/webhooks/calendly'
 import { Route as ApiWebhooksStripeRouteImport } from './routes/api/webhooks/stripe'
+import { Route as ApiAdminCmsSettingsRouteImport } from './routes/api/admin/cms/settings'
+import { Route as ApiAdminCmsUploadRouteImport } from './routes/api/admin/cms/upload'
+import { Route as ApiAdminCmsProjectsSlugRouteImport } from './routes/api/admin/cms/projects/$slug'
+import { Route as ApiAdminCmsSectionsSectionIdRouteImport } from './routes/api/admin/cms/sections/$sectionId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -41,6 +56,11 @@ const TermsRoute = TermsRouteImport.update({
 const ApiChatIntentRoute = ApiChatIntentRouteImport.update({
   id: '/api/chat-intent',
   path: '/api/chat-intent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCmsStatusRoute = ApiCmsStatusRouteImport.update({
+  id: '/api/cms-status',
+  path: '/api/cms-status',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiContactRoute = ApiContactRouteImport.update({
@@ -68,6 +88,26 @@ const PricingSuccessRoute = PricingSuccessRouteImport.update({
   path: '/pricing/success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminCmsRoute = ApiAdminCmsRouteImport.update({
+  id: '/api/admin/cms',
+  path: '/api/admin/cms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminLoginRoute = ApiAdminLoginRouteImport.update({
+  id: '/api/admin/login',
+  path: '/api/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminLogoutRoute = ApiAdminLogoutRouteImport.update({
+  id: '/api/admin/logout',
+  path: '/api/admin/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminMeRoute = ApiAdminMeRouteImport.update({
+  id: '/api/admin/me',
+  path: '/api/admin/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthGoogleLeadRoute = ApiAuthGoogleLeadRouteImport.update({
   id: '/api/auth/google-lead',
   path: '/api/auth/google-lead',
@@ -88,111 +128,198 @@ const ApiWebhooksStripeRoute = ApiWebhooksStripeRouteImport.update({
   path: '/api/webhooks/stripe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminCmsSettingsRoute = ApiAdminCmsSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => ApiAdminCmsRoute,
+} as any)
+const ApiAdminCmsUploadRoute = ApiAdminCmsUploadRouteImport.update({
+  id: '/upload',
+  path: '/upload',
+  getParentRoute: () => ApiAdminCmsRoute,
+} as any)
+const ApiAdminCmsProjectsSlugRoute = ApiAdminCmsProjectsSlugRouteImport.update({
+  id: '/projects/$slug',
+  path: '/projects/$slug',
+  getParentRoute: () => ApiAdminCmsRoute,
+} as any)
+const ApiAdminCmsSectionsSectionIdRoute =
+  ApiAdminCmsSectionsSectionIdRouteImport.update({
+    id: '/sections/$sectionId',
+    path: '/sections/$sectionId',
+    getParentRoute: () => ApiAdminCmsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/api/chat-intent': typeof ApiChatIntentRoute
+  '/api/cms-status': typeof ApiCmsStatusRoute
   '/api/contact': typeof ApiContactRoute
   '/api/lead': typeof ApiLeadRoute
   '/api/meeting': typeof ApiMeetingRoute
   '/api/projects': typeof ApiProjectsRoute
   '/pricing/success': typeof PricingSuccessRoute
+  '/api/admin/cms': typeof ApiAdminCmsRouteWithChildren
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/me': typeof ApiAdminMeRoute
   '/api/auth/google-lead': typeof ApiAuthGoogleLeadRoute
   '/api/stripe/checkout': typeof ApiStripeCheckoutRoute
   '/api/webhooks/calendly': typeof ApiWebhooksCalendlyRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
+  '/api/admin/cms/settings': typeof ApiAdminCmsSettingsRoute
+  '/api/admin/cms/upload': typeof ApiAdminCmsUploadRoute
+  '/api/admin/cms/projects/$slug': typeof ApiAdminCmsProjectsSlugRoute
+  '/api/admin/cms/sections/$sectionId': typeof ApiAdminCmsSectionsSectionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/api/chat-intent': typeof ApiChatIntentRoute
+  '/api/cms-status': typeof ApiCmsStatusRoute
   '/api/contact': typeof ApiContactRoute
   '/api/lead': typeof ApiLeadRoute
   '/api/meeting': typeof ApiMeetingRoute
   '/api/projects': typeof ApiProjectsRoute
   '/pricing/success': typeof PricingSuccessRoute
+  '/api/admin/cms': typeof ApiAdminCmsRouteWithChildren
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/me': typeof ApiAdminMeRoute
   '/api/auth/google-lead': typeof ApiAuthGoogleLeadRoute
   '/api/stripe/checkout': typeof ApiStripeCheckoutRoute
   '/api/webhooks/calendly': typeof ApiWebhooksCalendlyRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
+  '/api/admin/cms/settings': typeof ApiAdminCmsSettingsRoute
+  '/api/admin/cms/upload': typeof ApiAdminCmsUploadRoute
+  '/api/admin/cms/projects/$slug': typeof ApiAdminCmsProjectsSlugRoute
+  '/api/admin/cms/sections/$sectionId': typeof ApiAdminCmsSectionsSectionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/api/chat-intent': typeof ApiChatIntentRoute
+  '/api/cms-status': typeof ApiCmsStatusRoute
   '/api/contact': typeof ApiContactRoute
   '/api/lead': typeof ApiLeadRoute
   '/api/meeting': typeof ApiMeetingRoute
   '/api/projects': typeof ApiProjectsRoute
   '/pricing/success': typeof PricingSuccessRoute
+  '/api/admin/cms': typeof ApiAdminCmsRouteWithChildren
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/me': typeof ApiAdminMeRoute
   '/api/auth/google-lead': typeof ApiAuthGoogleLeadRoute
   '/api/stripe/checkout': typeof ApiStripeCheckoutRoute
   '/api/webhooks/calendly': typeof ApiWebhooksCalendlyRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
+  '/api/admin/cms/settings': typeof ApiAdminCmsSettingsRoute
+  '/api/admin/cms/upload': typeof ApiAdminCmsUploadRoute
+  '/api/admin/cms/projects/$slug': typeof ApiAdminCmsProjectsSlugRoute
+  '/api/admin/cms/sections/$sectionId': typeof ApiAdminCmsSectionsSectionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/privacy'
     | '/terms'
     | '/api/chat-intent'
+    | '/api/cms-status'
     | '/api/contact'
     | '/api/lead'
     | '/api/meeting'
     | '/api/projects'
     | '/pricing/success'
+    | '/api/admin/cms'
+    | '/api/admin/login'
+    | '/api/admin/logout'
+    | '/api/admin/me'
     | '/api/auth/google-lead'
     | '/api/stripe/checkout'
     | '/api/webhooks/calendly'
     | '/api/webhooks/stripe'
+    | '/api/admin/cms/settings'
+    | '/api/admin/cms/upload'
+    | '/api/admin/cms/projects/$slug'
+    | '/api/admin/cms/sections/$sectionId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/privacy'
     | '/terms'
     | '/api/chat-intent'
+    | '/api/cms-status'
     | '/api/contact'
     | '/api/lead'
     | '/api/meeting'
     | '/api/projects'
     | '/pricing/success'
+    | '/api/admin/cms'
+    | '/api/admin/login'
+    | '/api/admin/logout'
+    | '/api/admin/me'
     | '/api/auth/google-lead'
     | '/api/stripe/checkout'
     | '/api/webhooks/calendly'
     | '/api/webhooks/stripe'
+    | '/api/admin/cms/settings'
+    | '/api/admin/cms/upload'
+    | '/api/admin/cms/projects/$slug'
+    | '/api/admin/cms/sections/$sectionId'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/privacy'
     | '/terms'
     | '/api/chat-intent'
+    | '/api/cms-status'
     | '/api/contact'
     | '/api/lead'
     | '/api/meeting'
     | '/api/projects'
     | '/pricing/success'
+    | '/api/admin/cms'
+    | '/api/admin/login'
+    | '/api/admin/logout'
+    | '/api/admin/me'
     | '/api/auth/google-lead'
     | '/api/stripe/checkout'
     | '/api/webhooks/calendly'
     | '/api/webhooks/stripe'
+    | '/api/admin/cms/settings'
+    | '/api/admin/cms/upload'
+    | '/api/admin/cms/projects/$slug'
+    | '/api/admin/cms/sections/$sectionId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   ApiChatIntentRoute: typeof ApiChatIntentRoute
+  ApiCmsStatusRoute: typeof ApiCmsStatusRoute
   ApiContactRoute: typeof ApiContactRoute
   ApiLeadRoute: typeof ApiLeadRoute
   ApiMeetingRoute: typeof ApiMeetingRoute
   ApiProjectsRoute: typeof ApiProjectsRoute
   PricingSuccessRoute: typeof PricingSuccessRoute
+  ApiAdminCmsRoute: typeof ApiAdminCmsRouteWithChildren
+  ApiAdminLoginRoute: typeof ApiAdminLoginRoute
+  ApiAdminLogoutRoute: typeof ApiAdminLogoutRoute
+  ApiAdminMeRoute: typeof ApiAdminMeRoute
   ApiAuthGoogleLeadRoute: typeof ApiAuthGoogleLeadRoute
   ApiStripeCheckoutRoute: typeof ApiStripeCheckoutRoute
   ApiWebhooksCalendlyRoute: typeof ApiWebhooksCalendlyRoute
@@ -206,6 +333,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -227,6 +361,13 @@ declare module '@tanstack/react-router' {
       path: '/api/chat-intent'
       fullPath: '/api/chat-intent'
       preLoaderRoute: typeof ApiChatIntentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cms-status': {
+      id: '/api/cms-status'
+      path: '/api/cms-status'
+      fullPath: '/api/cms-status'
+      preLoaderRoute: typeof ApiCmsStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/contact': {
@@ -264,6 +405,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/cms': {
+      id: '/api/admin/cms'
+      path: '/api/admin/cms'
+      fullPath: '/api/admin/cms'
+      preLoaderRoute: typeof ApiAdminCmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/login': {
+      id: '/api/admin/login'
+      path: '/api/admin/login'
+      fullPath: '/api/admin/login'
+      preLoaderRoute: typeof ApiAdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/logout': {
+      id: '/api/admin/logout'
+      path: '/api/admin/logout'
+      fullPath: '/api/admin/logout'
+      preLoaderRoute: typeof ApiAdminLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/me': {
+      id: '/api/admin/me'
+      path: '/api/admin/me'
+      fullPath: '/api/admin/me'
+      preLoaderRoute: typeof ApiAdminMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/google-lead': {
       id: '/api/auth/google-lead'
       path: '/api/auth/google-lead'
@@ -292,19 +461,71 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiWebhooksStripeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/cms/settings': {
+      id: '/api/admin/cms/settings'
+      path: '/settings'
+      fullPath: '/api/admin/cms/settings'
+      preLoaderRoute: typeof ApiAdminCmsSettingsRouteImport
+      parentRoute: typeof ApiAdminCmsRoute
+    }
+    '/api/admin/cms/upload': {
+      id: '/api/admin/cms/upload'
+      path: '/upload'
+      fullPath: '/api/admin/cms/upload'
+      preLoaderRoute: typeof ApiAdminCmsUploadRouteImport
+      parentRoute: typeof ApiAdminCmsRoute
+    }
+    '/api/admin/cms/projects/$slug': {
+      id: '/api/admin/cms/projects/$slug'
+      path: '/projects/$slug'
+      fullPath: '/api/admin/cms/projects/$slug'
+      preLoaderRoute: typeof ApiAdminCmsProjectsSlugRouteImport
+      parentRoute: typeof ApiAdminCmsRoute
+    }
+    '/api/admin/cms/sections/$sectionId': {
+      id: '/api/admin/cms/sections/$sectionId'
+      path: '/sections/$sectionId'
+      fullPath: '/api/admin/cms/sections/$sectionId'
+      preLoaderRoute: typeof ApiAdminCmsSectionsSectionIdRouteImport
+      parentRoute: typeof ApiAdminCmsRoute
+    }
   }
 }
 
+interface ApiAdminCmsRouteChildren {
+  ApiAdminCmsSettingsRoute: typeof ApiAdminCmsSettingsRoute
+  ApiAdminCmsUploadRoute: typeof ApiAdminCmsUploadRoute
+  ApiAdminCmsProjectsSlugRoute: typeof ApiAdminCmsProjectsSlugRoute
+  ApiAdminCmsSectionsSectionIdRoute: typeof ApiAdminCmsSectionsSectionIdRoute
+}
+
+const ApiAdminCmsRouteChildren: ApiAdminCmsRouteChildren = {
+  ApiAdminCmsSettingsRoute: ApiAdminCmsSettingsRoute,
+  ApiAdminCmsUploadRoute: ApiAdminCmsUploadRoute,
+  ApiAdminCmsProjectsSlugRoute: ApiAdminCmsProjectsSlugRoute,
+  ApiAdminCmsSectionsSectionIdRoute: ApiAdminCmsSectionsSectionIdRoute,
+}
+
+const ApiAdminCmsRouteWithChildren = ApiAdminCmsRoute._addFileChildren(
+  ApiAdminCmsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
   ApiChatIntentRoute: ApiChatIntentRoute,
+  ApiCmsStatusRoute: ApiCmsStatusRoute,
   ApiContactRoute: ApiContactRoute,
   ApiLeadRoute: ApiLeadRoute,
   ApiMeetingRoute: ApiMeetingRoute,
   ApiProjectsRoute: ApiProjectsRoute,
   PricingSuccessRoute: PricingSuccessRoute,
+  ApiAdminCmsRoute: ApiAdminCmsRouteWithChildren,
+  ApiAdminLoginRoute: ApiAdminLoginRoute,
+  ApiAdminLogoutRoute: ApiAdminLogoutRoute,
+  ApiAdminMeRoute: ApiAdminMeRoute,
   ApiAuthGoogleLeadRoute: ApiAuthGoogleLeadRoute,
   ApiStripeCheckoutRoute: ApiStripeCheckoutRoute,
   ApiWebhooksCalendlyRoute: ApiWebhooksCalendlyRoute,

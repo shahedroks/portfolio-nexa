@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Github, Loader2, ArrowUpRight } from "lucide-react";
+import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionHeading } from "./Reveal";
 import { useCms } from "@/lib/cms-context";
 import type { Project } from "@/lib/projects.data";
@@ -12,13 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-async function fetchProjects(): Promise<Project[]> {
-  const res = await fetch("/api/projects");
-  if (!res.ok) throw new Error("Failed to load projects");
-  const json = (await res.json()) as { data: Project[] };
-  return json.data;
-}
 
 function isPhoneProject(project: Project) {
   return project.category === "Mobile Apps" || project.category === "UI/UX";
@@ -74,21 +66,25 @@ function ProjectPreview({ project }: { project: Project }) {
 }
 
 export function Portfolio() {
-  const portfolio = useCms().sections.portfolio;
+  const { sections, projects } = useCms();
+  const portfolio = sections.portfolio;
   const filters = portfolio.filters;
   type Filter = string;
   const [active, setActive] = useState<Filter>("All");
   const [displayed, setDisplayed] = useState<Filter>("All");
   const [phase, setPhase] = useState<"idle" | "out" | "in">("idle");
   const [selected, setSelected] = useState<Project | null>(null);
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["projects"],
-    queryFn: fetchProjects,
-  });
+
+  const data = useMemo(
+    () =>
+      projects.map(
+        ({ order: _order, published: _published, ...project }): Project => project,
+      ),
+    [projects],
+  );
 
   const visible = useMemo(() => {
-    const list = data ?? [];
-    return displayed === "All" ? list : list.filter((p) => p.category === displayed);
+    return displayed === "All" ? data : data.filter((p) => p.category === displayed);
   }, [data, displayed]);
 
   useEffect(() => {
@@ -149,13 +145,9 @@ export function Portfolio() {
           })}
         </Reveal>
 
-        {isLoading ? (
-          <div className="mt-14 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <Loader2 className="h-4 w-4 animate-spin" /> Loading projects…
-          </div>
-        ) : isError ? (
-          <p className="mt-14 text-center text-sm text-destructive">
-            Projects couldn&apos;t be loaded right now. Please refresh the page.
+        {data.length === 0 ? (
+          <p className="mt-14 text-center text-sm text-muted-foreground">
+            No projects published yet. Add documents in Firestore <code>projects</code>.
           </p>
         ) : (
           <div
@@ -242,7 +234,7 @@ export function Portfolio() {
           </div>
         )}
 
-        {!isLoading && !isError && visible.length === 0 ? (
+        {data.length > 0 && visible.length === 0 ? (
           <p className="mt-10 text-center text-sm text-muted-foreground transition-opacity duration-300">
             No projects in this category yet.
           </p>

@@ -164,6 +164,7 @@ async function writeDoc(
   collection: string,
   data: Record<string, unknown>,
   docId?: string,
+  options?: { merge?: boolean },
 ): Promise<SaveResult> {
   const firestore = initFirebase();
   if (!firestore) {
@@ -173,10 +174,11 @@ async function writeDoc(
   try {
     const now = new Date().toISOString();
     const payload = { ...data, updatedAt: now, createdAt: data.createdAt ?? now };
+    const merge = options?.merge !== false;
 
     if (docId) {
       const ref = firestore.collection(collection).doc(docId);
-      await withTimeout(ref.set(payload, { merge: true }));
+      await withTimeout(ref.set(payload, { merge }));
     } else {
       await withTimeout(firestore.collection(collection).add(payload));
     }
@@ -185,6 +187,64 @@ async function writeDoc(
   } catch (err) {
     const message = err instanceof Error ? err.message : "Firestore write failed.";
     console.error(`Firebase write failed [${collection}]:`, message);
+    return { saved: false, reason: message };
+  }
+}
+
+/** Public CMS / admin writes */
+export async function writeFirestoreDoc(
+  collection: string,
+  docId: string,
+  data: Record<string, unknown>,
+  options?: { merge?: boolean },
+) {
+  return writeDoc(collection, data, docId, options);
+}
+
+export async function deleteFirestoreDoc(collection: string, docId: string): Promise<SaveResult> {
+  const firestore = initFirebase();
+  if (!firestore) {
+    return { saved: false, reason: "Firebase is not configured." };
+  }
+  try {
+    await withTimeout(firestore.collection(collection).doc(docId).delete());
+    return { saved: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Firestore delete failed.";
+    console.error(`Firebase delete failed [${collection}/${docId}]:`, message);
+    return { saved: false, reason: message };
+  }
+}
+
+export async function uploadCmsFile(
+  storagePath: string,
+  buffer: Buffer,
+  contentType: string,
+): Promise<{ saved: true; url: string } | { saved: false; reason: string }> {
+  const bucket = getFirebaseStorage()?.bucket();
+  if (!bucket) {
+    return { saved: false, reason: "Firebase Storage is not configured." };
+  }
+  try {
+    const { randomUUID } = await import("node:crypto");
+    const token = randomUUID();
+    const file = bucket.file(storagePath);
+    await withTimeout(
+      file.save(buffer, {
+        resumable: false,
+        metadata: {
+          contentType,
+          metadata: { firebaseStorageDownloadTokens: token },
+          cacheControl: "public, max-age=31536000",
+        },
+      }),
+      30_000,
+    );
+    const url = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(storagePath)}?alt=media&token=${token}`;
+    return { saved: true, url };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Storage upload failed.";
+    console.error("Firebase Storage upload failed:", message);
     return { saved: false, reason: message };
   }
 }
